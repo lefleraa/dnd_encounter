@@ -37,6 +37,8 @@ defmodule DndEncounterWeb.EncounterChannel do
   def handle_info(:after_join, socket) do
     DndEncounter.EncounterEvent.get_events()
     |> Enum.each(fn msg -> push(socket, "shout", %{
+        id: msg.id,
+        timestamp: msg.inserted_at,
         type: msg.type,
         payload: msg.payload,
       }) end)

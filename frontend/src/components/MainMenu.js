@@ -3,7 +3,11 @@ import classNames from 'classnames';
 import Icon from 'atoms/Icon';
 import BtnWrap from 'atoms/BtnWrap';
 import DetailHeading from 'atoms/DetailHeading';
-import { faDiceD20, faHomeAlt, faPlayCircle } from '@fortawesome/pro-light-svg-icons';
+import {
+  faDiceD20,
+  faHomeAlt,
+  faPlayCircle,
+} from '@fortawesome/pro-light-svg-icons';
 
 const Logo = () => {
   return (

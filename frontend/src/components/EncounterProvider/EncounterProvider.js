@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, createContext, useState } from 'react';
 import cloneDeep from 'lodash-es/cloneDeep';
 import find from 'lodash-es/find';
 import compact from 'lodash-es/compact';
+import sortBy from 'lodash-es/sortBy';
 import groupBy from 'lodash-es/groupBy';
 import noop from 'lodash-es/noop';
 import { eventTypes } from 'data';
@@ -142,7 +143,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
         ...initEncounter,
       },
     });
-    events.forEach((event, i) => {
+    sortBy(events, ['timestamp']).forEach((event, i) => {
       const { payload = {} } = event;
       const { combatant_id } = payload;
 
