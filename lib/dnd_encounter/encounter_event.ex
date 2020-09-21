@@ -1,5 +1,5 @@
 defmodule DndEncounter.EncounterEvent do
-  use Ecto.Schema
+  use DndEncounter.Schema
   import Ecto.Changeset
 
   schema "encounter_events" do
