@@ -1,0 +1,58 @@
+
+/**********  BORDER UTILITY  **********/
+
+.mixin-border-array(@i: length(@color-list)) when (@i > 0) {
+  .mixin-border-array(@i - 1);
+  @color:  extract(@color-list, @i);
+  @name:   extract(@color, 1);
+  @value:  extract(@color, 2);
+  &-@{name} {
+    border-color: @value !important;
+  }
+  &-hover-@{name} {
+    .mixin-transition(all 0.1s ease-in-out);
+    &:hover {
+      border-color: @value !important;
+    }
+  }
+}
+
+.@{util_prefix} {
+  &-border {
+    .mixin-border-array();
+  }
+}
+
+@border-width-list:
+  1,
+  2,
+  3,
+  4,
+  5,
+  0;
+
+.mixin-border-width-array(@property; @i: length(@border-width-list)) when (@i > 0) {
+  .mixin-border-width-array(@property, @i - 1);
+  @width: extract(@border-width-list, @i);
+  &-@{width} {
+    @{property}: solid ~"@{width}px" @color-border !important;
+  }
+}
+
+.@{util_prefix} {
+  &-border {
+    .mixin-border-width-array(border);
+    &-l {
+      .mixin-border-width-array(border-left);
+    }
+    &-r {
+      .mixin-border-width-array(border-right);
+    }
+    &-t {
+      .mixin-border-width-array(border-top);
+    }
+    &-b {
+      .mixin-border-width-array(border-bottom);
+    }
+  }
+}

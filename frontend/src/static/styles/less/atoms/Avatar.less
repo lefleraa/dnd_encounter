@@ -1,0 +1,17 @@
+/*/////////////////////////////////////////////////////*/
+/*                        AVATAR                       */
+/*/////////////////////////////////////////////////////*/
+
+.Avatar {
+  display: inline-flex;
+  margin: 0;
+  .mixin-rounded(@global-border-radius);
+  background: fade(@color-white, 10%);
+  background-size: 'cover';
+  background-position: 50% 0%;
+  overflow: hidden;
+  border: 1px solid @color-gray-dark;
+  &.Avatar__circle {
+    .mixin-rounded(100%);
+  }
+}

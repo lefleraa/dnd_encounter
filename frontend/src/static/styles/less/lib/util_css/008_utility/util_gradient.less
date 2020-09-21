@@ -1,0 +1,80 @@
+
+/**********  GRADIENT UTILITY  **********/
+
+.mixin-grad-array(@name, @color) {
+
+  &-@{name}-primary,
+  &-a-@{name}-primary {
+    .mixin-gradient-a(@color, @color-primary) !important;
+  }
+  &-@{name}-secondary,
+  &-a-@{name}-secondary {
+    .mixin-gradient-a(@color, @color-secondary) !important;
+  }
+  &-@{name}-tertiary,
+  &-a-@{name}-tertiary {
+    .mixin-gradient-a(@color, @color-tertiary) !important;
+  }
+  &-@{name}-quat,
+  &-a-@{name}-quat {
+    .mixin-gradient-a(@color, @color-quat) !important;
+  }
+  &-@{name}-quin,
+  &-a-@{name}-quin {
+    .mixin-gradient-a(@color, @color-quin) !important;
+  }
+  &-@{name}-sen,
+  &-a-@{name}-sen {
+    .mixin-gradient-a(@color, @color-sen) !important;
+  }
+
+  &-v-@{name}-primary {
+    .mixin-gradient-v(@color, @color-primary) !important;
+  }
+  &-v-@{name}-secondary {
+    .mixin-gradient-v(@color, @color-secondary) !important;
+  }
+  &-v-@{name}-tertiary {
+    .mixin-gradient-v(@color, @color-tertiary) !important;
+  }
+  &-v-@{name}-quat {
+    .mixin-gradient-v(@color, @color-quat) !important;
+  }
+  &-v-@{name}-quin {
+    .mixin-gradient-v(@color, @color-quin) !important;
+  }
+  &-v-@{name}-sen {
+    .mixin-gradient-v(@color, @color-sen) !important;
+  }
+
+  &-h-@{name}-primary {
+    .mixin-gradient-h(@color, @color-primary) !important;
+  }
+  &-h-@{name}-secondary {
+    .mixin-gradient-h(@color, @color-secondary) !important;
+  }
+  &-h-@{name}-tertiary {
+    .mixin-gradient-h(@color, @color-tertiary) !important;
+  }
+  &-h-@{name}-quat {
+    .mixin-gradient-h(@color, @color-quat) !important;
+  }
+  &-h-@{name}-quin {
+    .mixin-gradient-h(@color, @color-quin) !important;
+  }
+  &-h-@{name}-sen {
+    .mixin-gradient-h(@color, @color-sen) !important;
+  }
+
+}
+
+.@{util_prefix} {
+  &-grad {
+    .mixin-grad-array(primary,   @color-primary);
+    .mixin-grad-array(secondary, @color-secondary);
+    .mixin-grad-array(tertiary,  @color-tertiary);
+    .mixin-grad-array(quat,      @color-quat);
+    .mixin-grad-array(quin,      @color-quin);
+    .mixin-grad-array(sen,       @color-sen);
+  }
+}

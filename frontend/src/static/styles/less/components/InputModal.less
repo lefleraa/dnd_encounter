@@ -1,0 +1,38 @@
+///////////////////////////////////////////////
+// InitiativeModal
+///////////////////////////////////////////////
+
+.InputModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 340px;
+  .InputModal__Input {
+    @fontSize: 100px;
+    display: flex;
+    align-items: center;
+    height: @fontSize;
+    overflow: hidden;
+    input {
+      display: block;
+      border: none !important;
+      outline: none !important;
+      .mixin-shadow(none) !important;
+      background: transparent !important;
+      color: @color-white !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      text-align: center !important;
+      font-size: @fontSize !important;
+      line-height: @fontSize !important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+        margin: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,141 @@
+///////////////////////////////////////////////
+// CombatantList
+///////////////////////////////////////////////
+
+.CombatantList {
+  background: @SidePanelBg;
+  .mixin-rounded(10px);
+
+  &__Inner {
+    margin: -1rem;
+  }
+}
+
+///////////////////////////////////////////////
+// Combatant
+///////////////////////////////////////////////
+
+.Combatant {
+  .mixin-rounded(@global-border-radius);
+  .mixin-transition(all @global-transition-dur @global-transition-easing);
+  .Combatant__fade {
+    @amount: 100%;
+    filter: grayscale(@amount);
+    -webkit-filter: grayscale(@amount);
+    -moz-filter: grayscale(@amount);
+    -o-filter: grayscale(@amount);
+    -ms-filter: grayscale(@amount);
+    .mixin-opacity(0.5);
+  }
+  &:not(.Combatant__inactive).Combatant__active {
+    background: fade(@color-primary, 10%) !important;
+  }
+  &:hover {
+    background: fade(@color-gray-light, 3%);
+  }
+}
+
+.Combatant {
+  width: "100%";
+  padding: 1rem;
+  &__Initiative {
+    width: 50px;
+    background: fade(@color-primary, 20%);
+    .mixin-aspect-ratio(1, 1);
+    .mixin-rounded(@global-border-radius);
+    .Icon {
+      color: @color-white;
+    }
+    &__complete,
+    &__null,
+    &__dead {
+      background: @color-gray-darker;
+      &,
+      .Icon {
+        color: @color-gray;
+      }
+    }
+    &__complete {
+      &,
+      .Icon {
+        color: @color-confirm;
+      }
+    }
+    &__null {
+      &,
+      .Icon {
+        color: @color-primary;
+      }
+      &:hover {
+        background: fade(@color-primary, 20%);
+        &,
+        .Icon {
+          color: @color-white;
+        }
+      }
+    }
+    &__dead {
+      &,
+      .Icon {
+        color: @color-gray;
+      }
+      .Icon {
+        .mixin-opacity(0.7);
+      }
+    }
+  }
+  &__Name {
+    max-width: 50%;
+  }
+  &__Health {
+    width: 125px;
+    &__Bar {
+      position: absolute;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      .mixin-transition(all @global-transition-dur @global-transition-easing)
+    }
+  }
+}
+
+.Combatant {
+  &__Btn__Wrap {
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    .mixin-rounded(@global-border-radius);
+    background: fade(@color-gray, 5%) !important;
+    &__disabled {
+      .mixin-opacity(0.5);
+    }
+    &:not(.Combatant__Btn__Wrap__disabled):hover {
+      background: fade(@color-gray, 15%) !important;
+    }
+  }
+}
+
+.Combatant {
+  &__Btn {
+    height: 40px;
+    width: 40px;
+    margin: 0;
+    padding: 0;
+    .mixin-rounded(@global-border-radius);
+    color: @color-white;
+    &__subtle {
+      color: fade(@color-gray, 50%);
+    }
+    &__error {
+      color: @color-error !important;
+    }
+    &__confirm {
+      color: @color-confirm !important;
+    }
+    &__disabled {
+      color: fade(@color-gray, 50%);
+    }
+  }
+}

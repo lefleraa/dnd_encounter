@@ -1,0 +1,43 @@
+///////////////////////////////////////////////
+// MainMenu
+///////////////////////////////////////////////
+
+.MainMenu {
+  &__List {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    &__Item {
+      padding: 0;
+      margin: 0;
+      letter-spacing: 1px;
+      &__Inner {
+        text-decoration: none !important;
+        &__Icon {
+          color: darken(@color-gray-light, 5%);
+          .mixin-transition(all @global-transition-dur @global-transition-easing);
+        }
+        &__Text {
+          color: lighten(@color-gray, 5%);
+          .mixin-transition(all @global-transition-dur @global-transition-easing);
+        }
+        &:hover {
+          .MainMenu {
+            &__List {
+              &__Item {
+                &__Inner {
+                  &__Icon {
+                    color: @color-primary;
+                  }
+                  &__Text {
+                    color: @color-white;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

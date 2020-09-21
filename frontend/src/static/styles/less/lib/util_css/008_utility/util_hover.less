@@ -1,0 +1,54 @@
+
+/**********  HOVER GROW UTILITY  **********/
+
+.@{util_prefix} {
+  &-hover {
+    &-grow {
+
+      &-1,
+      &-2,
+      &-3,
+      &-4,
+      &-5,
+      &-6,
+      &-7,
+      &-8,
+      &-9,
+      &-10 {
+        .mixin-transform(scale(1)) !important;
+        .mixin-transition(all 0.15s ease-in-out);
+      }
+      &-1:hover {
+        .mixin-transform(scale(1.025)) !important;
+      }
+      &-2:hover {
+        .mixin-transform(scale(1.05)) !important;
+      }
+      &-3:hover {
+        .mixin-transform(scale(1.075)) !important;
+      }
+      &-4:hover {
+        .mixin-transform(scale(1.1)) !important;
+      }
+      &-5:hover {
+        .mixin-transform(scale(1.125)) !important;
+      }
+      &-6:hover {
+        .mixin-transform(scale(1.15)) !important;
+      }
+      &-7:hover {
+        .mixin-transform(scale(1.175)) !important;
+      }
+      &-8:hover {
+        .mixin-transform(scale(1.2)) !important;
+      }
+      &-9:hover {
+        .mixin-transform(scale(1.225)) !important;
+      }
+      &-10:hover {
+        .mixin-transform(scale(1.25)) !important;
+      }
+
+    }
+  }
+}

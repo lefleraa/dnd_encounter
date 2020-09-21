@@ -1,0 +1,22 @@
+/*/////////////////////////////////////////////////////*/
+/*                    DROPDOWN MENU                    */
+/*/////////////////////////////////////////////////////*/
+
+.IconSquare {
+  background: fade(@color-gray-light, 4%);
+  color: lighten(@color-gray, 5%);
+  .mixin-rounded(@global-border-radius);
+}
+
+.IconBtn {
+  &:hover {
+    .IconSquare {
+      .mixin-transition(all @global-transition-dur @global-transition-easing);
+      &:hover,
+      &__active {
+        background: @color-primary;
+        color: @color-white;
+      }
+    }
+  }
+}

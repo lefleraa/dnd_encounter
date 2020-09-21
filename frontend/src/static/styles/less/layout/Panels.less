@@ -1,0 +1,28 @@
+@SidePanelBg: darken(@color-gray-darker, 3%);
+@MainPanelBg: lighten(@SidePanelBg, 3.5%);
+
+.LeftPanel,
+.RightPanel {
+  background: @SidePanelBg;
+  color: @color-white;
+}
+
+.MainHeader {
+  background: @MainPanelBg;
+}
+
+.MainPanel {
+  .mixin-gradient-v(@MainPanelBg, @SidePanelBg);
+  color: @color-white;
+  &:not(.scrollbar-container):after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 33px;
+    .mixin-gradient-v(fade(@MainPanelBg, 0%), fade(@MainPanelBg, 100%));
+    .mixin-transform(rotate(180deg));
+  }
+}

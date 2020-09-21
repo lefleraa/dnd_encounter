@@ -1,0 +1,14 @@
+/*/////////////////////////////////////////////////////*/
+/*                        Badge                        */
+/*/////////////////////////////////////////////////////*/
+
+.Badge {
+  font-weight: @fw-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 23px;
+  min-width: 23px;
+  .mixin-rounded(500px);
+  .mixin-transition(all @global-transition-dur @global-transition-easing);
+}

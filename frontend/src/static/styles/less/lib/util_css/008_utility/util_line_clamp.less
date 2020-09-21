@@ -1,0 +1,33 @@
+
+/**********  LINE CLAMP UTILITY  **********/
+
+.@{util_prefix} {
+  &-line-clamp {
+    &-ellipsis {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+
+    .mixin-line-clamp(@value) {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: @value;
+      -webkit-box-orient: vertical;
+    }
+
+    &-1 {
+      .mixin-line-clamp(1) !important;
+    }
+    &-2 {
+      .mixin-line-clamp(2) !important;
+    }
+    &-3 {
+      .mixin-line-clamp(3) !important;
+    }
+    &-4 {
+      .mixin-line-clamp(4) !important;
+    }
+
+  }
+}

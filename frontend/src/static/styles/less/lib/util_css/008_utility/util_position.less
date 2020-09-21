@@ -1,0 +1,45 @@
+
+/**********  POSITION UTILITY  **********/
+
+.mixin-mq-pos(@value; @i: length(@mq-list)) when (@i > 0) {
+  .mixin-mq-pos(@value, @i - 1);
+  @item: extract(@mq-list, @i);
+  @name: extract(@item, 1);
+  @size: extract(@item, 2);
+  .mixin (@i) when (@i =< 1) {
+    &-@{value} {
+      position: @value !important;
+    }
+  }
+  .mixin(@i);
+  @media (min-width: @size) {
+    &-@{name}-@{value} {
+      position: @value !important;
+    }
+  }
+}
+
+.@{util_prefix} {
+  &-pos {
+    .mixin-mq-pos(relative);
+    .mixin-mq-pos(absolute);
+    .mixin-mq-pos(fixed);
+    .mixin-mq-pos(static);
+  }
+}
+
+.@{util_prefix} {
+  &-pos {
+    &-align {
+      &-top {
+        vertical-align: top !important;
+      }
+      &-middle {
+        vertical-align: middle !important;
+      }
+      &-bottom {
+        vertical-align: bottom !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+
+/**********  TEXT UTILITY  **********/
+
+.mixin-mq-text-align(@value; @i: length(@mq-list)) when (@i > 0) {
+  .mixin-mq-text-align(@value, @i - 1);
+  @item: extract(@mq-list, @i);
+  @name: extract(@item, 1);
+  @size: extract(@item, 2);
+  .mixin (@i) when (@i =< 1) {
+    &-@{value} {
+      text-align: @value !important;
+    }
+  }
+  .mixin(@i);
+  @media (min-width: @size) {
+    &-@{name}-@{value} {
+      text-align: @value !important;
+    }
+  }
+}
+
+.@{util_prefix} {
+  &-text {
+    .mixin-mq-text-align(left);
+    .mixin-mq-text-align(center);
+    .mixin-mq-text-align(right);
+    .mixin-mq-text-align(justify);
+  }
+}
+
+.mixin-fw-array(@i: length(@fw-list)) when (@i > 0) {
+  .mixin-fw-array(@i - 1);
+  @fw:    extract(@fw-list, @i);
+  @name:  extract(@fw, 1);
+  @value: extract(@fw, 2);
+  &-@{name} {
+    font-weight: @value  !important;
+  }
+}
+
+.@{util_prefix} {
+  &-text {
+    .mixin-fw-array();
+  }
+}
+
+.@{util_prefix} {
+  &-text {
+
+    &-underline {
+      text-decoration: underline !important;
+    }
+    &-uppercase {
+      text-transform: uppercase !important;
+    }
+    &-lowercase {
+      text-transform: lowercase !important;
+    }
+    &-capitalize {
+      text-transform: capitalize !important;
+    }
+
+    &-italic {
+      font-style: italic !important;
+    }
+
+  }
+}
