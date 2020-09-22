@@ -3632,6 +3632,11 @@
 * {
   font-family: 'Poppins', sans-serif !important;
 }
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+}
 .btn {
   display: inline-flex;
   align-items: center;
@@ -4153,6 +4158,10 @@ html {
 }
 .MainHeader {
   background: #151b21;
+}
+body {
+  background: #0e1216;
+  color: #e6e6e6;
 }
 .MainPanel {
   background-color: #151b21;

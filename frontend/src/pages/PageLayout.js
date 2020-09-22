@@ -5,7 +5,10 @@ import Panel from 'components/Panel';
 const PageLayout = ({ components = {} }) => {
   const { header, content, panelLeft, panelRight } = components;
   return (
-    <>
+    <Panel
+      direction="row"
+      className="PageLayout animate__animated animate__fadeIn"
+    >
       {!!panelLeft && (
         <Panel size={panelLeft.size || 290} className="LeftPanel">
           {panelLeft.component}
@@ -26,7 +29,7 @@ const PageLayout = ({ components = {} }) => {
           {panelRight.component}
         </Panel>
       )}
-    </>
+    </Panel>
   );
 };
 

@@ -9,6 +9,8 @@ import {
   faPlayCircle,
 } from '@fortawesome/pro-light-svg-icons';
 
+import { Link } from 'react-router-dom';
+
 const Logo = () => {
   return (
     <div
@@ -23,25 +25,25 @@ const Logo = () => {
   );
 };
 
-const Item = ({ text, icon, className, ...rest }) => {
+const Item = ({ text, icon, className, to, activeOnlyWhenExact, ...rest }) => {
   return (
-    <li
-      className={classNames('MainMenu__List__Item small mb-2', className)}
-      {...rest}
-    >
-      <BtnWrap
-        block={true}
-        className="MainMenu__List__Item__Inner d-flex align-items-center"
-      >
-        {!!icon && (
-          <Icon
-            icon={icon}
-            className="MainMenu__List__Item__Inner__Icon mr-2"
-            size="2x"
-            fw={true}
-          />
-        )}
-        <span className="MainMenu__List__Item__Inner__Text">{text}</span>
+    <li className={classNames('MainMenu__List__Item small mb-2', className)}>
+      <BtnWrap block={true} className="MainMenu__List__Item__Inner">
+        <Link
+          to={to}
+          {...rest}
+          className="d-flex align-items-center MainMenu__List__Item__Inner__Nav"
+        >
+          {!!icon && (
+            <Icon
+              icon={icon}
+              className="MainMenu__List__Item__Inner__Icon mr-2"
+              size="2x"
+              fw={true}
+            />
+          )}
+          <span className="MainMenu__List__Item__Inner__Text">{text}</span>
+        </Link>
       </BtnWrap>
     </li>
   );
@@ -64,14 +66,19 @@ const MainMenu = () => {
           <Logo />
         </div>
         <Menu>
-          <Item icon={faHomeAlt} text="Home" />
-          <Item icon={faPlayCircle} text="Active" style={{ marginTop: 15 }} />
+          <Item icon={faHomeAlt} text="Home" to="/home" />
+          <Item
+            icon={faPlayCircle}
+            text="Active"
+            to="/encounter"
+            style={{ marginTop: 15 }}
+          />
         </Menu>
         <Menu heading="Encounters">
-          <Item text="Recent" />
-          <Item text="All" />
-          <Item text="Incomplete" />
-          <Item text="Complete" />
+          <Item text="Recent" to="/encounters" />
+          <Item text="All" to="/encounters" />
+          <Item text="Incomplete" to="/encounters" />
+          <Item text="Complete" to="/encounters" />
         </Menu>
         <Menu heading="Players">
           <Item text="Recent" />

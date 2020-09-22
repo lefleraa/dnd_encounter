@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import cleanProps from 'clean-react-props';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const propTypes = {
   type: PropTypes.oneOf(['button', 'reset', 'submit', null]),
@@ -42,7 +42,7 @@ const BtnWrap = forwardRef(
     ref
   ) => {
     const Tag = rest.to
-      ? NavLink
+      ? Link
       : rest.href
       ? 'a'
       : rest.naked

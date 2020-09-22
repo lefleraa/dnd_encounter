@@ -74,13 +74,12 @@ function eventsReducer(throughState, action) {
   }
 }
 
-let channel = socket.channel('encounter:lobby', {}); // connect to encounter socket
-
 ////////////////////////////
 // HOOK
 ////////////////////////////
 
 const EncounterContext = createContext();
+let encounterChannel;
 
 const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   const { combatant_turn_start, combatant_dead } = eventTypes;
@@ -109,7 +108,9 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   /////////////////////////////////////////////////////////
 
   useEffect(() => {
-    channel.on('shout', ({ events }) => {
+    // connect to encounter socket
+    encounterChannel = socket.channel('encounter:lobby', {});
+    encounterChannel.on('event', ({ events }) => {
       console.log('incomingEvents', events);
       dispatchEvents({
         type: 'setEvents',
@@ -121,7 +122,25 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
         }),
       });
     });
-    channel.join(); // join the channel.
+    // join the encounterChannel.
+    encounterChannel
+      .join()
+      .receive('ok', (resp) => {
+        console.log('Joined encounterChannel successfully', resp);
+      })
+      .receive('error', (resp) => {
+        console.log('Unable to join encounterChannel', resp);
+      });
+    return () => {
+      encounterChannel
+        .leave()
+        .receive('ok', (resp) => {
+          console.log('Left encounterChannel successfully', resp);
+        })
+        .receive('error', (resp) => {
+          console.log('Unable to leave encounterChannel', resp);
+        });
+    };
   }, []);
 
   /////////////////////////////////////////////////////////
@@ -169,8 +188,10 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   const dispatchEvent = (event, options) => {
     const { callback = noop } = options || {};
     const handlePush = () => {
-      channel.push('shout', event);
-      callback();
+      if (encounterChannel) {
+        encounterChannel.push('event', event);
+        callback();
+      }
     };
 
     if (!!onMostRecentEvent) {

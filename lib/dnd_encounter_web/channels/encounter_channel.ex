@@ -14,9 +14,14 @@ defmodule DndEncounterWeb.EncounterChannel do
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
-  @impl true
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  # @impl true
+  # def handle_in("ping", payload, socket) do
+  #   {:reply, {:ok, payload}, socket}
+  # end
+
+  # Add authorization logic here as required.
+  defp authorized?(_payload) do
+    true
   end
 
   def get_events() do
@@ -26,26 +31,21 @@ defmodule DndEncounterWeb.EncounterChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (encounter:lobby).
   @impl true
-  def handle_in("shout", payload, socket) do
+  def handle_in("event", payload, socket) do
     EncounterEvent.changeset(%EncounterEvent{}, payload)
     |> Repo.insert
     broadcast(
       socket,
-      "shout",
+      "event",
       get_events
     );
     {:noreply, socket}
   end
 
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
-  end
-
   def handle_info(:after_join, socket) do
     push(
       socket,
-      "shout",
+      "event",
       get_events
     );
     {:noreply, socket} # :noreply
