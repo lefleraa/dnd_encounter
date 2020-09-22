@@ -1,4 +1,5 @@
-import React, { useReducer, useEffect, createContext, useState } from 'react';
+import React, { useReducer, useEffect, createContext } from 'react';
+import moment from 'moment';
 import cloneDeep from 'lodash-es/cloneDeep';
 import find from 'lodash-es/find';
 import compact from 'lodash-es/compact';
@@ -57,7 +58,8 @@ function eventsReducer(throughState, action) {
     case 'setEvents':
       return {
         ...state,
-        events: payload || [],
+        events: sortBy(payload || [], ['timestamp']),
+        currentEventIndex: payload.length - 1,
       };
     case 'setCurrentEvent':
       return {
@@ -66,13 +68,6 @@ function eventsReducer(throughState, action) {
           payload === undefined || payload === null
             ? events.length - 1
             : payload,
-      };
-    case 'pushEvent':
-      let list = compact(concat(events, [payload]));
-      return {
-        ...state,
-        events: list,
-        currentEventIndex: list.length - 1,
       };
     default:
       return state;
@@ -114,14 +109,16 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   /////////////////////////////////////////////////////////
 
   useEffect(() => {
-    channel.on('shout', (event) => {
-      console.log('incomingEvent', event);
+    channel.on('shout', ({ events }) => {
+      console.log('incomingEvents', events);
       dispatchEvents({
-        type: 'pushEvent',
-        payload: {
-          ...event,
-          payload: event.payload || {},
-        },
+        type: 'setEvents',
+        payload: events.map((event) => {
+          return {
+            ...event,
+            payload: event.payload || {},
+          };
+        }),
       });
     });
     channel.join(); // join the channel.
@@ -143,7 +140,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
         ...initEncounter,
       },
     });
-    sortBy(events, ['timestamp']).forEach((event, i) => {
+    events.forEach((event, i) => {
       const { payload = {} } = event;
       const { combatant_id } = payload;
 

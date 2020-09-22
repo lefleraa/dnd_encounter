@@ -17,7 +17,27 @@ import combatantTypes from 'data/combatantTypes';
 
 import { EncounterContext } from 'components/EncounterProvider';
 
+import { mockCharacters } from 'mock';
+
 const AddBtn = () => {
+  const encounterContext = useContext(EncounterContext);
+  const { eventTypes = {}, encounter = {} } = encounterContext;
+  const { actions = {} } = encounter;
+  const { combatant_add } = eventTypes;
+  const { dispatchEvent = noop } = actions;
+
+  // mock
+  const handleAddCombatant = () => {
+    dispatchEvent({
+      type: combatant_add.type,
+      payload: {
+        combatant_id:
+          mockCharacters[Math.floor(Math.random() * mockCharacters.length)]
+            .combatant_id,
+      },
+    });
+  };
+
   return (
     <Dropdown
       placement="BOTTOM_RIGHT"
@@ -40,6 +60,7 @@ const AddBtn = () => {
                     />
                   }
                   text={`Add ${description}`}
+                  action={handleAddCombatant}
                 />
               );
             })}

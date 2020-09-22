@@ -1,5 +1,6 @@
 defmodule DndEncounter.EncounterEvent do
-  use DndEncounter.Schema
+  alias DndEncounter.{Repo, Schema, EncounterEvent}
+  use Schema
   import Ecto.Changeset
 
   schema "encounter_events" do
@@ -16,7 +17,4 @@ defmodule DndEncounter.EncounterEvent do
     |> validate_required([:type])
   end
 
-  def get_events(limit \\ 20) do
-    DndEncounter.Repo.all(DndEncounter.EncounterEvent, limit: limit)
-  end
 end
