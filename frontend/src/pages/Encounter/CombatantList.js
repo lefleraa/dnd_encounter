@@ -9,6 +9,55 @@ import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';
 import Drawer from 'components/Drawer';
 import { faPlus } from '@fortawesome/pro-regular-svg-icons';
 
+const DragCombatantList = ({ list, onDragEnd }) => {
+  return (
+    !!(list && list.length) && (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {list.map((combatant, i) => {
+                return (
+                  <Draggable
+                    key={combatant.combatant_id}
+                    draggableId={combatant.combatant_id}
+                    index={i}
+                  >
+                    {(provided, snapshot) => {
+                      const {
+                        innerRef,
+                        draggableProps,
+                        dragHandleProps,
+                      } = provided;
+                      return (
+                        <>
+                          <div
+                            ref={innerRef}
+                            {...draggableProps}
+                            style={draggableProps.style}
+                            className="d-block"
+                          >
+                            <Combatant
+                              combatant={combatant}
+                              dragHandleProps={dragHandleProps}
+                            />
+                          </div>
+                          {provided.placeholder}
+                        </>
+                      );
+                    }}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    )
+  );
+};
+
 const CombatantList = () => {
   const encounterContext = useContext(EncounterContext);
   const { encounter = {}, eventTypes = {} } = encounterContext;
@@ -45,58 +94,6 @@ const CombatantList = () => {
     });
   }
 
-  // These are defined as a funtional component within this
-  // functional component to prevent unnecessary rerendering
-  // when the state is cleared to rehydrate via events.
-  const DragCombatantList = ({ list }) => {
-    return (
-      !!(list && list.length) && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {list.map((combatant, i) => {
-                  return (
-                    <Draggable
-                      key={combatant.combatant_id}
-                      draggableId={combatant.combatant_id}
-                      index={i}
-                    >
-                      {(provided, snapshot) => {
-                        const {
-                          innerRef,
-                          draggableProps,
-                          dragHandleProps,
-                        } = provided;
-                        return (
-                          <>
-                            <div
-                              ref={innerRef}
-                              {...draggableProps}
-                              style={draggableProps.style}
-                              className="d-block"
-                            >
-                              <Combatant
-                                combatant={combatant}
-                                dragHandleProps={dragHandleProps}
-                              />
-                            </div>
-                            {provided.placeholder}
-                          </>
-                        );
-                      }}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      )
-    );
-  };
-
   return (
     <>
       <div className="pb-5 pt-4 u-width-p-12">
@@ -114,7 +111,7 @@ const CombatantList = () => {
                   );
                 })}
               {/* READY COMBATANTS */}
-              <DragCombatantList list={ready} />
+              <DragCombatantList list={ready} onDragEnd={onDragEnd} />
               {/* DEAD COMBATANTS */}
               {!!(dead && dead.length) &&
                 dead.map((combatant) => {

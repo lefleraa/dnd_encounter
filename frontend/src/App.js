@@ -22,7 +22,7 @@ const App = () => {
               <MainMenu />
             </Panel>
           </Panel>
-          <Panel direction="row" className="MainPanel">
+          <Panel direction="row">
             <Switch>
               <Redirect exact from="/" to="/home" />
               <Route exact path="/home">

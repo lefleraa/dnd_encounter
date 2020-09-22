@@ -11,7 +11,7 @@ import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
 const Header = ({ heading, components = {} }) => {
   const { backBtn, after } = components;
   return (
-    <div className="pt-5 pb-3">
+    <div className="pt-5 pb-3 u-color-white">
       <Container>
         <div className="d-flex align-items-center">
           <div className="col p-0">
