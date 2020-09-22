@@ -4170,7 +4170,6 @@ body {
   background-image: -ms-linear-gradient(#151b21, #0e1216);
   background-image: -o-linear-gradient(#151b21, #0e1216);
   background-image: linear-gradient(#151b21, #0e1216);
-  color: #e6e6e6;
 }
 .MainPanel:not(.scrollbar-container):after {
   position: absolute;
