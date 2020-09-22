@@ -1,17 +1,17 @@
 import React, { useReducer, useEffect, createContext } from 'react';
-import cloneDeep from 'lodash-es/cloneDeep';
+import socket from 'socket';
 import find from 'lodash-es/find';
-import sortBy from 'lodash-es/sortBy';
 import groupBy from 'lodash-es/groupBy';
 import noop from 'lodash-es/noop';
 import { eventTypes } from 'data';
 import { encounterHelpers, socketHelper } from 'helpers';
-import { initEncounter, encounterReducer } from './reducer';
 import combatantTypes from 'data/combatantTypes';
 import combatantStatuses from 'data/combatantStatuses';
 import useEncounterInsights from './useEncounterInsights';
 import { faHistory } from '@fortawesome/pro-light-svg-icons';
-import socket from 'socket';
+
+import { initEvents, eventsReducer } from './eventsReducer';
+import { initEncounter, encounterReducer } from './reducer';
 
 import { mockCharacters } from 'mock';
 
@@ -36,42 +36,6 @@ function addCharacterLookup({ combatant_id }) {
 }
 
 ////////////////////////////
-// EVENTS REDUCER
-////////////////////////////
-
-const initEvents = {
-  events: [],
-  currentEventIndex: 0,
-};
-
-function eventsReducer(throughState, action) {
-  const { type, payload } = action;
-  let state = cloneDeep(throughState);
-  const { events = [], currentEventIndex } = state || {};
-
-  switch (type) {
-    case 'resetEvents':
-      return { ...initEvents };
-    case 'setEvents':
-      return {
-        ...state,
-        events: sortBy(payload || [], ['timestamp']),
-        currentEventIndex: payload.length - 1,
-      };
-    case 'setCurrentEvent':
-      return {
-        ...state,
-        currentEventIndex:
-          payload === undefined || payload === null
-            ? events.length - 1
-            : payload,
-      };
-    default:
-      return state;
-  }
-}
-
-////////////////////////////
 // CONTEXT PROVIDER
 ////////////////////////////
 
@@ -81,9 +45,11 @@ const EncounterContext = createContext();
 // WEBSOCKET CHANNEL
 ////////////////////////////
 
-const ENCOUNTER_CHANNEL_NAME = 'encounter:lobby';
-const ENCOUNTER_CHANNEL_PUSH_EVENT = 'event';
-let encounterChannel;
+const ENCOUNTER_STREAM = {
+  CHANNEL: undefined,
+  NAME: 'encounter:lobby',
+  PUSH_EVENT: 'event',
+};
 
 ////////////////////////////
 // ENCOUNTER PROVIDER
@@ -117,11 +83,11 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   /////////////////////////////////////////////////////////
 
   useEffect(() => {
-    encounterChannel = socket.channel(ENCOUNTER_CHANNEL_NAME, {});
+    ENCOUNTER_STREAM.CHANNEL = socket.channel(ENCOUNTER_STREAM.NAME, {});
 
     const { join = noop, leave = noop } = socketHelper({
-      channel: encounterChannel,
-      event: ENCOUNTER_CHANNEL_PUSH_EVENT,
+      channel: ENCOUNTER_STREAM.CHANNEL,
+      event: ENCOUNTER_STREAM.PUSH_EVENT,
       onPush: ({ events }) => {
         dispatchEvents({
           type: 'setEvents',
@@ -148,7 +114,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   const dispatchEvent = (event, options) => {
     const { callback = noop } = options || {};
     const handlePush = () => {
-      encounterChannel.push(ENCOUNTER_CHANNEL_PUSH_EVENT, event);
+      ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, event);
       callback();
     };
 
