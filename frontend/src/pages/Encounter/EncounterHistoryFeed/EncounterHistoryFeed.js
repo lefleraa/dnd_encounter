@@ -24,7 +24,7 @@ const HistoryRound = ({
   const { history = {}, actions = {}, round } = encounter;
   const { list = [] } = history;
   const { currentHistoryIndex } = history;
-  const { setCurrentEvent = noop } = actions;
+  const { setHistoryIndex = noop } = actions;
 
   const [expanded, setExpanded] = useState(true);
 
@@ -98,7 +98,7 @@ const HistoryRound = ({
                     historyLog={historyLog}
                     key={historyIndex}
                     active={historyIndex === currentHistoryIndex}
-                    onClick={() => setCurrentEvent(historyIndex)}
+                    onClick={() => setHistoryIndex(historyIndex)}
                   />
                 );
               }

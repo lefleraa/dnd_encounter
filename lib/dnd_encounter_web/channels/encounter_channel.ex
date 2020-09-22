@@ -37,7 +37,7 @@ defmodule DndEncounterWeb.EncounterChannel do
     broadcast(
       socket,
       "event",
-      get_events
+      get_events()
     );
     {:noreply, socket}
   end
@@ -46,7 +46,7 @@ defmodule DndEncounterWeb.EncounterChannel do
     push(
       socket,
       "event",
-      get_events
+      get_events()
     );
     {:noreply, socket} # :noreply
   end

@@ -58,7 +58,10 @@ const ENCOUNTER_STREAM = {
 const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   const { combatant_turn_start, combatant_dead } = eventTypes;
 
-  const [eventState, dispatchEvents] = useReducer(eventsReducer, initEvents);
+  const [eventState, dispatchLocalEvents] = useReducer(
+    eventsReducer,
+    initEvents
+  );
   const { events = [], currentEventIndex } = eventState;
 
   const [encounter, dispatchEncounter] = useReducer(
@@ -89,7 +92,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
       channel: ENCOUNTER_STREAM.CHANNEL,
       event: ENCOUNTER_STREAM.PUSH_EVENT,
       onPush: ({ events }) => {
-        dispatchEvents({
+        dispatchLocalEvents({
           type: 'setEvents',
           payload: events.map((event) => {
             return {
@@ -194,6 +197,51 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
 
   /////////////////////////////////////////////////////////
+  // ACTIONS
+  /////////////////////////////////////////////////////////
+
+  const actions = {
+    pushConfirmationModal,
+    dispatchEvent,
+
+    setHistoryIndex: (eventIndex) => {
+      dispatchLocalEvents({
+        type: 'setCurrentEvent',
+        payload: eventIndex,
+      });
+    },
+
+    overkillDeath: ({ combatant_id, healthChange }) => {
+      encounterHelpers.overkillDeath({
+        combatant_id,
+        healthChange,
+        combatants: combatants.list,
+        character_lookup,
+        onOverkill: ({ character }) => {
+          const { name } = character;
+          pushConfirmationModal({
+            variant: 'white',
+            icon: combatant_dead.historyLog.icon,
+            preTitle: name,
+            title: 'Kill Combatant?',
+            text: `${name} is exhausted.`,
+            detail: `Would you like to mark them dead?`,
+            cancelText: 'No',
+            confirmText: 'Yes',
+            action: () =>
+              dispatchEvent({
+                type: combatant_dead.type,
+                payload: {
+                  combatant_id,
+                },
+              }),
+          });
+        },
+      });
+    },
+  };
+
+  /////////////////////////////////////////////////////////
   // RETURN
   /////////////////////////////////////////////////////////
 
@@ -226,44 +274,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
             },
           },
           insights,
-          actions: {
-            pushConfirmationModal,
-            dispatchEvent,
-            setCurrentEvent: (eventIndex) => {
-              dispatchEvents({
-                type: 'setCurrentEvent',
-                payload: eventIndex,
-              });
-            },
-            overkillDeath: ({ combatant_id, healthChange }) => {
-              encounterHelpers.overkillDeath({
-                combatant_id,
-                healthChange,
-                combatants: combatants.list,
-                character_lookup,
-                onOverkill: ({ character }) => {
-                  const { name } = character;
-                  pushConfirmationModal({
-                    variant: 'white',
-                    icon: combatant_dead.historyLog.icon,
-                    preTitle: name,
-                    title: 'Kill Combatant?',
-                    text: `${name} is exhausted.`,
-                    detail: `Would you like to mark them dead?`,
-                    cancelText: 'No',
-                    confirmText: 'Yes',
-                    action: () =>
-                      dispatchEvent({
-                        type: combatant_dead.type,
-                        payload: {
-                          combatant_id,
-                        },
-                      }),
-                  });
-                },
-              });
-            },
-          },
+          actions,
         },
         eventTypes,
         combatantStatuses,

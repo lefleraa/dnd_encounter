@@ -162,8 +162,10 @@ const ConfirmationProvider = ({ children }) => {
   return (
     <>
       {children({
-        pushConfirmationModal,
-        clearConfirmationModal,
+        actions: {
+          pushConfirmationModal,
+          clearConfirmationModal,
+        },
       })}
       <ConfirmModal
         show={!!confirmationModal}
