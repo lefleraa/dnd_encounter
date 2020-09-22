@@ -1,14 +1,11 @@
 import React, { useReducer, useEffect, createContext } from 'react';
-import moment from 'moment';
 import cloneDeep from 'lodash-es/cloneDeep';
 import find from 'lodash-es/find';
-import compact from 'lodash-es/compact';
 import sortBy from 'lodash-es/sortBy';
 import groupBy from 'lodash-es/groupBy';
 import noop from 'lodash-es/noop';
 import { eventTypes } from 'data';
-import { encounterHelpers } from 'helpers';
-import { concat } from 'lodash-es';
+import { encounterHelpers, socketHelper } from 'helpers';
 import { initEncounter, encounterReducer } from './reducer';
 import combatantTypes from 'data/combatantTypes';
 import combatantStatuses from 'data/combatantStatuses';
@@ -75,11 +72,22 @@ function eventsReducer(throughState, action) {
 }
 
 ////////////////////////////
-// HOOK
+// CONTEXT PROVIDER
 ////////////////////////////
 
 const EncounterContext = createContext();
+
+////////////////////////////
+// WEBSOCKET CHANNEL
+////////////////////////////
+
+const ENCOUNTER_CHANNEL_NAME = 'encounter:lobby';
+const ENCOUNTER_CHANNEL_PUSH_EVENT = 'event';
 let encounterChannel;
+
+////////////////////////////
+// ENCOUNTER PROVIDER
+////////////////////////////
 
 const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   const { combatant_turn_start, combatant_dead } = eventTypes;
@@ -105,43 +113,59 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
 
   /////////////////////////////////////////////////////////
   // KEEP FRONT END EVENTS IN SYNC WITH THE SERVER
+  // VIA WEBSOCKET CHANNEL
   /////////////////////////////////////////////////////////
 
   useEffect(() => {
-    // connect to encounter socket
-    encounterChannel = socket.channel('encounter:lobby', {});
-    encounterChannel.on('event', ({ events }) => {
-      console.log('incomingEvents', events);
-      dispatchEvents({
-        type: 'setEvents',
-        payload: events.map((event) => {
-          return {
-            ...event,
-            payload: event.payload || {},
-          };
-        }),
-      });
-    });
-    // join the encounterChannel.
-    encounterChannel
-      .join()
-      .receive('ok', (resp) => {
-        console.log('Joined encounterChannel successfully', resp);
-      })
-      .receive('error', (resp) => {
-        console.log('Unable to join encounterChannel', resp);
-      });
-    return () => {
-      encounterChannel
-        .leave()
-        .receive('ok', (resp) => {
-          console.log('Left encounterChannel successfully', resp);
-        })
-        .receive('error', (resp) => {
-          console.log('Unable to leave encounterChannel', resp);
+    encounterChannel = socket.channel(ENCOUNTER_CHANNEL_NAME, {});
+
+    const { join = noop, leave = noop } = socketHelper({
+      channel: encounterChannel,
+      event: ENCOUNTER_CHANNEL_PUSH_EVENT,
+      onPush: ({ events }) => {
+        dispatchEvents({
+          type: 'setEvents',
+          payload: events.map((event) => {
+            return {
+              ...event,
+              payload: event.payload || {},
+            };
+          }),
         });
+      },
+    });
+
+    join();
+    return () => {
+      leave();
     };
   }, []);
+
+  /////////////////////////////////////////////////////////
+  // HANDLE PUSH EVENT
+  /////////////////////////////////////////////////////////
+
+  const dispatchEvent = (event, options) => {
+    const { callback = noop } = options || {};
+    const handlePush = () => {
+      encounterChannel.push(ENCOUNTER_CHANNEL_PUSH_EVENT, event);
+      callback();
+    };
+
+    if (!!onMostRecentEvent) {
+      handlePush();
+    } else {
+      pushConfirmationModal({
+        variant: 'error',
+        icon: faHistory,
+        preTitle: 'Re-writing History',
+        text: 'A past action is currently selected.',
+        detail: 'This will overwrite actions in your history.',
+        confirmText: 'Continue',
+        action: handlePush,
+      });
+    }
+  };
 
   /////////////////////////////////////////////////////////
   // HYDRATE STATE VIA EVENTS:
@@ -180,34 +204,6 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
       }
     });
   }, [events]);
-
-  /////////////////////////////////////////////////////////
-  // HANDLE PUSH EVENT
-  /////////////////////////////////////////////////////////
-
-  const dispatchEvent = (event, options) => {
-    const { callback = noop } = options || {};
-    const handlePush = () => {
-      if (encounterChannel) {
-        encounterChannel.push('event', event);
-        callback();
-      }
-    };
-
-    if (!!onMostRecentEvent) {
-      handlePush();
-    } else {
-      pushConfirmationModal({
-        variant: 'error',
-        icon: faHistory,
-        preTitle: 'Re-writing History',
-        text: 'A past action is currently selected.',
-        detail: 'This will overwrite actions in your history.',
-        confirmText: 'Continue',
-        action: handlePush,
-      });
-    }
-  };
 
   /////////////////////////////////////////////////////////
   // ENSURE ACTIVE CANDIDATE
