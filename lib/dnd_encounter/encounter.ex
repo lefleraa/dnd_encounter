@@ -6,6 +6,7 @@ defmodule DndEncounter.Encounter do
     |> Enum.map(fn event -> %{
         id: event.id,
         timestamp: event.inserted_at,
+        archive: event.archive,
         type: event.type,
         payload: event.payload,
       }

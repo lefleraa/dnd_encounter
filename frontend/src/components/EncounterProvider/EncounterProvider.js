@@ -152,6 +152,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
         ...initEncounter,
       },
     });
+
     events.forEach((event, i) => {
       const { payload = {} } = event;
       const { combatant_id } = payload;
@@ -165,6 +166,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
           ...event,
           metaData: {
             historyIndex: i,
+            event,
           },
           config: {
             snapshot: !!(i > currentEventIndex) ? true : false,

@@ -76,7 +76,7 @@ const OptionMenu = () => {
   const { eventTypes = {}, encounter = {} } = encounterContext;
   const { actions = {} } = encounter;
   const { reorder_combatants_by_initiative } = eventTypes;
-  const { dispatchEvent = noop } = actions;
+  const { dispatchEvent = noop, pushConfirmationModal = noop } = actions;
 
   return (
     <Dropdown
@@ -94,8 +94,16 @@ const OptionMenu = () => {
               }
               text="Re-order by Initiative"
               action={() => {
-                dispatchEvent({
-                  type: reorder_combatants_by_initiative.type,
+                pushConfirmationModal({
+                  variant: 'white',
+                  icon: reorder_combatants_by_initiative.historyLog.icon,
+                  text: 'This will reset the order of combatants',
+                  cancelText: 'No',
+                  confirmText: 'Yes',
+                  action: () =>
+                    dispatchEvent({
+                      type: reorder_combatants_by_initiative.type,
+                    }),
                 });
               }}
             />

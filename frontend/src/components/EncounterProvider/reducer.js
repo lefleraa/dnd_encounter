@@ -32,9 +32,9 @@ function encounterReducer(throughState, action) {
   let state = cloneDeep(throughState);
 
   const passedProps = {
-    state,
     type,
     payload,
+    state,
     metaData,
     snapshot: !!config.snapshot ? cloneDeep(throughState) : undefined,
   };

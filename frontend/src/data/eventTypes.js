@@ -31,14 +31,7 @@ const historyLog = {
   heading: undefined,
 };
 
-const pushToHistory = ({
-  type,
-  payload = {},
-  state = {},
-  metaData = {},
-  snapshot,
-  historyLog,
-}) => {
+const pushToHistory = ({ state = {}, metaData = {}, snapshot, historyLog }) => {
   const { history = {} } = state;
 
   let throughState = state;
@@ -60,10 +53,6 @@ const pushToHistory = ({
     ...metaData,
     round: throughState.round,
     bypass: !!snapshot,
-    event: {
-      type,
-      payload,
-    },
   };
 
   const clonedHistory = clone(history.list);
