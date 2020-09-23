@@ -81,12 +81,12 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
   const encounterContext = useContext(EncounterContext);
   const {
     encounter = {},
-    eventTypes = {},
+    eventHandlers = {},
     combatantStatuses = {},
   } = encounterContext;
   const { actions = {}, insights = {}, helpers = {} } = encounter;
   const { dispatchEvent = noop } = actions;
-  const { combatant_roll_initiative } = eventTypes;
+  const { combatant_roll_initiative } = eventHandlers;
   const { combatant_id, active } = combatant;
 
   // CREATE LOCAL STATE TO MANAGE COMBATANT UI CONTROLS
@@ -128,7 +128,7 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
     combatant,
     insights,
     combatantInsights,
-    eventTypes,
+    eventHandlers,
     combatantStatuses,
     dispatchEvent,
     localActions,

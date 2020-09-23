@@ -20,9 +20,9 @@ import { mockCharacters } from 'mock';
 
 const AddBtn = () => {
   const encounterContext = useContext(EncounterContext);
-  const { eventTypes = {}, encounter = {} } = encounterContext;
+  const { eventHandlers = {}, encounter = {} } = encounterContext;
   const { actions = {} } = encounter;
-  const { combatant_add } = eventTypes;
+  const { combatant_add } = eventHandlers;
   const { dispatchEvent = noop } = actions;
 
   // mock
@@ -72,9 +72,9 @@ const AddBtn = () => {
 
 const OptionMenu = () => {
   const encounterContext = useContext(EncounterContext);
-  const { eventTypes = {}, encounter = {} } = encounterContext;
+  const { eventHandlers = {}, encounter = {} } = encounterContext;
   const { actions = {} } = encounter;
-  const { reorder_combatants_by_initiative } = eventTypes;
+  const { reorder_combatants_by_initiative } = eventHandlers;
   const { dispatchEvent = noop, pushConfirmationModal = noop } = actions;
 
   return (
@@ -115,7 +115,7 @@ const OptionMenu = () => {
 
 const RoundIncrementor = () => {
   const encounterContext = useContext(EncounterContext);
-  const { encounter = {}, eventTypes = {} } = encounterContext;
+  const { encounter = {}, eventHandlers = {} } = encounterContext;
   const { actions = {}, insights = {}, round } = encounter;
   const {
     encounterStarted,
@@ -126,7 +126,7 @@ const RoundIncrementor = () => {
     hasCombatants,
   } = insights;
   const { pushConfirmationModal = noop, dispatchEvent = noop } = actions;
-  const { round_increment } = eventTypes;
+  const { round_increment } = eventHandlers;
 
   const handleTriggerStartEncounter = () => {
     const handlePush = () => {

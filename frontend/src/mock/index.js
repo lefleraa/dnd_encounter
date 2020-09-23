@@ -1,2 +1,2 @@
 export * from './mockCharacters';
-export * from './mockEvents';
+// export * from './mockEvents';

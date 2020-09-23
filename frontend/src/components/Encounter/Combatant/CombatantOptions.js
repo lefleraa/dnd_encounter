@@ -11,7 +11,7 @@ import { faEllipsisH } from '@fortawesome/pro-regular-svg-icons';
 
 const CombatantOptions = ({
   combatant = {},
-  eventTypes = {},
+  eventHandlers = {},
   dispatchEvent = noop,
   localActions = {},
   combatantInsights = {},
@@ -25,7 +25,7 @@ const CombatantOptions = ({
     combatant_turn_start,
     combatant_turn_end,
     combatant_roll_initiative,
-  } = eventTypes;
+  } = eventHandlers;
 
   const { isDead, isComplete } = combatantInsights;
 

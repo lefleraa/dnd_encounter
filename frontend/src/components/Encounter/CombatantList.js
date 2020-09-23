@@ -60,9 +60,9 @@ const DragCombatantList = ({ list, onDragEnd }) => {
 
 const CombatantList = () => {
   const encounterContext = useContext(EncounterContext);
-  const { encounter = {}, eventTypes = {} } = encounterContext;
+  const { encounter = {}, eventHandlers = {} } = encounterContext;
 
-  const { combatant_move_up, combatant_move_down } = eventTypes;
+  const { combatant_move_up, combatant_move_down } = eventHandlers;
   const { combatants = {}, actions = {} } = encounter;
   const { dispatchEvent = noop } = actions;
   const {

@@ -36,10 +36,10 @@ const HealthInput = forwardRef(
 
 const HealthModal = ({ show, onHide, combatant = {} }) => {
   const encounterContext = useContext(EncounterContext);
-  const { encounter = {}, eventTypes = {} } = encounterContext;
+  const { encounter = {}, eventHandlers = {} } = encounterContext;
   const { actions = {}, helpers = {} } = encounter;
   const { dispatchEvent = noop, overkillDeath = noop } = actions;
-  const { combatant_dead } = eventTypes;
+  const { combatant_dead } = eventHandlers;
 
   const { damage, combatant_id } = combatant;
   const character = helpers.getCharacterById(combatant_id);

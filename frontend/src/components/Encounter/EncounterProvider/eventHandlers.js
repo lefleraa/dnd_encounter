@@ -63,7 +63,7 @@ const pushToHistory = ({ state = {}, metaData = {}, snapshot, historyLog }) => {
   return throughState;
 };
 
-const eventTypes = {
+const eventHandlers = {
   //////////////////////
   // ENCOUNTER
   //////////////////////
@@ -82,7 +82,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.encounter_created.historyLog,
+          ...eventHandlers.encounter_created.historyLog,
           heading: 'Pre-round',
         },
       });
@@ -119,7 +119,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.round_increment.historyLog,
+          ...eventHandlers.round_increment.historyLog,
           heading: `Round ${state.round}`,
         },
       });
@@ -154,7 +154,7 @@ const eventTypes = {
           ]),
         },
         historyLog: {
-          ...eventTypes.reorder_combatants_by_initiative.historyLog,
+          ...eventHandlers.reorder_combatants_by_initiative.historyLog,
         },
       });
     },
@@ -191,7 +191,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.combatant_add.historyLog,
+          ...eventHandlers.combatant_add.historyLog,
         },
       });
     },
@@ -219,7 +219,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.combatant_remove.historyLog,
+          ...eventHandlers.combatant_remove.historyLog,
         },
       });
     },
@@ -247,7 +247,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.combatant_fled.historyLog,
+          ...eventHandlers.combatant_fled.historyLog,
         },
       });
     },
@@ -286,7 +286,7 @@ const eventTypes = {
           }),
         },
         historyLog: {
-          ...eventTypes.combatant_dead.historyLog,
+          ...eventHandlers.combatant_dead.historyLog,
         },
       });
     },
@@ -314,7 +314,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.combatant_damage.historyLog,
+          ...eventHandlers.combatant_damage.historyLog,
           after: `took ${damage} damage`,
         },
       });
@@ -347,7 +347,7 @@ const eventTypes = {
       return pushToHistory({
         ...params,
         historyLog: {
-          ...eventTypes.combatant_heal.historyLog,
+          ...eventHandlers.combatant_heal.historyLog,
           after: `received ${health} health`,
         },
       });
@@ -402,7 +402,7 @@ const eventTypes = {
           }),
         },
         historyLog: {
-          ...eventTypes.combatant_roll_initiative.historyLog,
+          ...eventHandlers.combatant_roll_initiative.historyLog,
           after: `rolled ${initiative} initiative`,
         },
       });
@@ -435,7 +435,7 @@ const eventTypes = {
           }),
         },
         historyLog: {
-          ...eventTypes.combatant_move_up.historyLog,
+          ...eventHandlers.combatant_move_up.historyLog,
           after: `moved from position ${startIndex + 1} to ${endIndex + 1}`,
         },
       });
@@ -468,7 +468,7 @@ const eventTypes = {
           }),
         },
         historyLog: {
-          ...eventTypes.combatant_move_down.historyLog,
+          ...eventHandlers.combatant_move_down.historyLog,
           after: `moved from position ${startIndex + 1} to ${endIndex + 1}`,
         },
       });
@@ -510,7 +510,7 @@ const eventTypes = {
           combatants,
         },
         historyLog: {
-          ...eventTypes.combatant_turn_end.historyLog,
+          ...eventHandlers.combatant_turn_end.historyLog,
         },
       });
     },
@@ -552,11 +552,11 @@ const eventTypes = {
           combatants,
         },
         historyLog: {
-          ...eventTypes.combatant_turn_start.historyLog,
+          ...eventHandlers.combatant_turn_start.historyLog,
         },
       });
     },
   },
 };
 
-export default eventTypes;
+export default eventHandlers;

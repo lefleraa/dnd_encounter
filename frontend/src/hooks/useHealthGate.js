@@ -1,9 +1,8 @@
-import { eventTypes } from 'data';
+import { eventHandlers } from 'components/Encounter';
 import { compactObject } from 'helpers';
 
-const { combatant_damage, combatant_heal } = eventTypes;
-
 const useHealthGate = ({ value, combatant_id, total_health, damage }) => {
+  const { combatant_damage, combatant_heal } = eventHandlers;
   let current_health = total_health - damage;
   let isDamage = value <= 0;
   let healthChange = isDamage ? Math.floor(value) : Math.ceil(value);

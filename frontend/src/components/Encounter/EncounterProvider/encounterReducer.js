@@ -1,5 +1,9 @@
 import cloneDeep from 'lodash-es/cloneDeep';
-import { eventTypes } from 'data';
+import eventHandlers from './eventHandlers';
+
+////////////////////////////////
+// REDUCER
+////////////////////////////////
 
 const initEncounter = {
   round: 0,
@@ -25,7 +29,7 @@ const {
   combatant_heal,
   combatant_move_up,
   combatant_move_down,
-} = eventTypes;
+} = eventHandlers;
 
 function encounterReducer(throughState, action) {
   const { type, payload, metaData = {}, config = {} } = action;

@@ -1,17 +1,17 @@
 import React, { useReducer, useEffect, createContext } from 'react';
 import socket from 'socket';
 import find from 'lodash-es/find';
-import groupBy from 'lodash-es/groupBy';
 import noop from 'lodash-es/noop';
-import { eventTypes } from 'data';
+import groupBy from 'lodash-es/groupBy';
+import eventHandlers from './eventHandlers';
 import { encounterHelpers, socketHelper } from 'helpers';
 import combatantTypes from 'data/combatantTypes';
 import combatantStatuses from 'data/combatantStatuses';
 import useEncounterInsights from './useEncounterInsights';
 import { faHistory } from '@fortawesome/pro-light-svg-icons';
 
-import { initEvents, eventsReducer } from './eventsReducer';
-import { initEncounter, encounterReducer } from './reducer';
+import { initEvents, eventReducer } from './eventReducer';
+import { initEncounter, encounterReducer } from './encounterReducer';
 
 import { mockCharacters } from 'mock';
 
@@ -56,10 +56,10 @@ const ENCOUNTER_STREAM = {
 ////////////////////////////
 
 const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
-  const { combatant_turn_start, combatant_dead } = eventTypes;
+  const { combatant_turn_start, combatant_dead } = eventHandlers;
 
   const [eventState, dispatchLocalEvents] = useReducer(
-    eventsReducer,
+    eventReducer,
     initEvents
   );
   const { events = [], currentEventIndex } = eventState;
@@ -161,7 +161,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
       addCharacterLookup({ combatant_id });
 
       // FORM ALL ENCOUNTER STATE FROM EVENT DATA
-      if (eventTypes[event.type]) {
+      if (eventHandlers[event.type]) {
         dispatchEncounter({
           ...event,
           metaData: {
@@ -180,23 +180,23 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   // ENSURE ACTIVE CANDIDATE
   /////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
+  //     return;
+  //   }
 
-    if (
-      !activeCombatant ||
-      activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
-    ) {
-      dispatchEvent({
-        type: combatant_turn_start.type,
-        payload: {
-          combatant_id: activeCombatantCandidate.combatant_id,
-        },
-      });
-    }
-  }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
+  //   if (
+  //     !activeCombatant ||
+  //     activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
+  //   ) {
+  //     dispatchEvent({
+  //       type: combatant_turn_start.type,
+  //       payload: {
+  //         combatant_id: activeCombatantCandidate.combatant_id,
+  //       },
+  //     });
+  //   }
+  // }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
 
   /////////////////////////////////////////////////////////
   // ACTIONS
@@ -278,7 +278,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
           insights,
           actions,
         },
-        eventTypes,
+        eventHandlers,
         combatantStatuses,
         combatantTypes,
       }}

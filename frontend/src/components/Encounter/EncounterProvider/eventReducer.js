@@ -6,7 +6,7 @@ const initEvents = {
   currentEventIndex: 0,
 };
 
-function eventsReducer(throughState, action) {
+function eventReducer(throughState, action) {
   const { type, payload } = action;
   let state = cloneDeep(throughState);
   const { events = [] } = state || {};
@@ -33,4 +33,4 @@ function eventsReducer(throughState, action) {
   }
 }
 
-export { eventsReducer, initEvents };
+export { eventReducer, initEvents };

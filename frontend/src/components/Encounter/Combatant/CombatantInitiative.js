@@ -15,7 +15,7 @@ const CombatantInitiative = ({
   insights = {},
   combatantInsights = {},
   dispatchEvent = noop,
-  eventTypes = {},
+  eventHandlers = {},
   localActions = {},
 }) => {
   const { combatant_id, initiative } = combatant;
@@ -24,7 +24,7 @@ const CombatantInitiative = ({
     combatant_turn_start,
     combatant_turn_end,
     combatant_dead,
-  } = eventTypes;
+  } = eventHandlers;
   const { setEditingInitiative = noop } = localActions;
   const [hover, setHover] = useState(false);
 
