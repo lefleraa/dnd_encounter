@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import noop from 'lodash-es/noop';
 import Icon from 'atoms/Icon';

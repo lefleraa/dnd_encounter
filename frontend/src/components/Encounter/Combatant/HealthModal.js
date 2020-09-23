@@ -14,7 +14,7 @@ import Modal from 'components/Modal';
 import FormControl from 'react-bootstrap/FormControl';
 import { faHeart } from '@fortawesome/pro-duotone-svg-icons';
 import { useHealthGate } from 'hooks';
-import { EncounterContext } from 'components/EncounterProvider';
+import { EncounterContext } from '../EncounterProvider';
 
 const HealthInput = forwardRef(
   ({ value, onChange = noop, onKeyPress = noop }, ref) => {

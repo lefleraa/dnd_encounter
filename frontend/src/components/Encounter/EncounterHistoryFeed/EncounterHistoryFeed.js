@@ -8,8 +8,8 @@ import Group from 'components/Group';
 import Scrollbars from 'components/Scrollbars';
 import Icon from 'atoms/Icon';
 import { useSpring } from 'react-spring';
+import { EncounterContext } from '../EncounterProvider';
 import { faChevronRight, faEmptySet } from '@fortawesome/pro-light-svg-icons';
-import { EncounterContext } from 'components/EncounterProvider';
 import HistoryLog, { HistoryLogDivider } from './HistoryLog';
 
 const transitionDur = 500;

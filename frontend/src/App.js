@@ -11,6 +11,7 @@ import MainMenu from 'components/MainMenu';
 import { Home } from 'pages/Home';
 import { Encounters } from 'pages/Encounters';
 import { Encounter } from 'pages/Encounter';
+import { EncounterDM } from 'pages/EncounterDM';
 
 const App = () => {
   return (
@@ -33,6 +34,9 @@ const App = () => {
               </Route>
               <Route path="/encounter">
                 <Encounter />
+              </Route>
+              <Route path="/encounter_dm">
+                <EncounterDM />
               </Route>
             </Switch>
           </Panel>

@@ -5,7 +5,7 @@ import Icon from 'atoms/Icon';
 import Avatar from 'atoms/Avatar';
 
 import { combatantTypes } from 'data';
-import { EncounterContext } from 'components/EncounterProvider';
+import { EncounterContext } from '../EncounterProvider';
 
 import CombatantHealth from './CombatantHealth';
 import CombatantDeathSaves from './CombatantDeathSaves';

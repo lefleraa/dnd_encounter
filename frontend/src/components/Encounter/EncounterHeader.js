@@ -6,6 +6,7 @@ import Header from 'components/Header';
 import Dropdown from 'atoms/Dropdown';
 import Btn from 'atoms/Btn';
 import Icon from 'atoms/Icon';
+import { EncounterContext } from './EncounterProvider';
 import {
   faPlus,
   faEllipsisH,
@@ -14,8 +15,6 @@ import {
 } from '@fortawesome/pro-regular-svg-icons';
 import { faHelmetBattle, faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 import combatantTypes from 'data/combatantTypes';
-
-import { EncounterContext } from 'components/EncounterProvider';
 
 import { mockCharacters } from 'mock';
 

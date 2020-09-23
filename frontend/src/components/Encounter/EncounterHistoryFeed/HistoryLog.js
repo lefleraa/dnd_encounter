@@ -5,12 +5,12 @@ import DetailHeading from 'atoms/DetailHeading';
 import Icon from 'atoms/Icon';
 import IconSquare from 'atoms/IconSquare';
 import Avatar from 'atoms/Avatar';
+import { EncounterContext } from '../EncounterProvider';
 import {
   faHistory,
   faCertificate,
   faMinus,
 } from '@fortawesome/pro-regular-svg-icons';
-import { EncounterContext } from 'components/EncounterProvider';
 
 let animateClasses = 'animate__animated animate__fadeInUp animate__faster';
 

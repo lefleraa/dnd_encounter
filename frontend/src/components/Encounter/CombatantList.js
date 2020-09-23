@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import noop from 'lodash-es/noop';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Combatant } from './Combatant';
 import Icon from 'atoms/Icon';
 import Btn from 'atoms/Btn';
-import { EncounterContext } from 'components/EncounterProvider';
-import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';
 import Drawer from 'components/Drawer';
+import { EncounterContext } from './EncounterProvider';
+import { Combatant } from './Combatant';
+import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';
 import { faPlus } from '@fortawesome/pro-regular-svg-icons';
 
 const DragCombatantList = ({ list, onDragEnd }) => {
@@ -97,7 +97,7 @@ const CombatantList = () => {
   return (
     <>
       <div className="pb-5 pt-4 u-width-p-12">
-        <div className="CombatantList p-5">
+        <div className="CombatantList p-5 u-overflow-hidden">
           {!!(list && list.length) ? (
             <div className="CombatantList__Inner u-pos-relative">
               {/* COMPLETED COMBATANTS */}
