@@ -5,6 +5,8 @@ import noop from 'lodash-es/noop';
 import groupBy from 'lodash-es/groupBy';
 import eventHandlers from './eventHandlers';
 import { encounterHelpers, socketHelper } from 'helpers';
+import { useWindow } from 'hooks';
+
 import combatantTypes from 'data/combatantTypes';
 import combatantStatuses from 'data/combatantStatuses';
 import useEncounterInsights from './useEncounterInsights';
@@ -84,35 +86,42 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   // HANDLE WINDOW STATE
   /////////////////////////////////////////////////////////
 
+  const [windowState, setWindowState] = useState();
   const [activeWindow, setActiveWindow] = useState(false);
 
-  useEffect(() => {
-    const handleSetActiveWindow = () => setActiveWindow(true);
-    const handleClearActiveWindow = () => setActiveWindow(false);
-
-    // ADD ACTIVE WINDOW EVENTS
-    handleSetActiveWindow();
-    window.addEventListener('focus', handleSetActiveWindow, false);
-    window.addEventListener('online', handleSetActiveWindow, false);
-    window.addEventListener('load', handleSetActiveWindow, false);
-
-    // ADD CLEAR ACTIVE WINDOW EVENTS
-    window.addEventListener('blur', handleClearActiveWindow, false);
-    window.addEventListener('offline', handleClearActiveWindow, false);
-    window.addEventListener('unload', handleClearActiveWindow, false);
-
-    return () => {
-      // REMOVE ACTIVE WINDOW EVENTS
-      window.removeEventListener('focus', handleSetActiveWindow, false);
-      window.removeEventListener('online', handleSetActiveWindow, false);
-      window.removeEventListener('load', handleSetActiveWindow, false);
-
-      // REMOVE CLEAR ACTIVE WINDOW EVENTS
-      window.removeEventListener('blur', handleClearActiveWindow, false);
-      window.removeEventListener('offline', handleClearActiveWindow, false);
-      window.removeEventListener('unload', handleClearActiveWindow, false);
-    };
-  }, []);
+  useWindow(
+    {
+      onMount: () => {
+        setWindowState('mounted');
+        setActiveWindow(true);
+      },
+      onFocus: () => {
+        setWindowState('focus');
+        setActiveWindow(true);
+      },
+      onBlur: () => {
+        setWindowState('blur');
+        setActiveWindow(true);
+      },
+      onOnline: () => {
+        setWindowState('online');
+        setActiveWindow(true);
+      },
+      onOffline: () => {
+        setWindowState('offline');
+        setActiveWindow(false);
+      },
+      onLoad: () => {
+        setWindowState('loaded');
+        setActiveWindow(true);
+      },
+      onUnload: () => {
+        setWindowState('unloaded');
+        setActiveWindow(false);
+      },
+    },
+    []
+  );
 
   /////////////////////////////////////////////////////////
   // KEEP FRONT END EVENTS IN SYNC WITH THE SERVER
@@ -138,11 +147,13 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
       },
     });
 
-    join();
+    if (activeWindow) {
+      join();
+    }
     return () => {
       leave();
     };
-  }, [activeWindow]);
+  }, [activeWindow, windowState]);
 
   /////////////////////////////////////////////////////////
   // HANDLE PUSH EVENT
