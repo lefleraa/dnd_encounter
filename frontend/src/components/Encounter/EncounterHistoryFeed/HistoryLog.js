@@ -34,6 +34,7 @@ const HistoryLogDivider = ({ className, ...rest }) => {
 const HistoryLog = ({
   historyLog = {},
   active,
+  animate = false,
   components = {},
   style,
   onClick,
@@ -77,7 +78,7 @@ const HistoryLog = ({
         block
         className={classNames(
           'HistoryLog mb-1',
-          animateClasses,
+          !!animate && animateClasses,
           !!(hover && !disabled) && 'HistoryLog__hover',
           !!(active && !disabled) && 'HistoryLog__active',
           !!(bypass && !active) && 'HistoryLog__faded'

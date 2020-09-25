@@ -14,11 +14,7 @@ import HistoryLog, { HistoryLogDivider } from './HistoryLog';
 
 const transitionDur = 500;
 
-const HistoryRound = ({
-  historyRound = [],
-  handleUpdateScroll,
-  isTransitioningOut,
-}) => {
+const HistoryRound = ({ historyRound = [], handleUpdateScroll }) => {
   const encounterContext = useContext(EncounterContext);
   const { encounter = {} } = encounterContext;
   const { history = {}, actions = {}, round } = encounter;
@@ -26,17 +22,15 @@ const HistoryRound = ({
   const { currentHistoryIndex } = history;
   const { setHistoryIndex = noop } = actions;
 
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const headingLog = historyRound[0];
   const firstLog = historyRound[1];
   const isCurrentRound = round === headingLog.metaData.round;
 
   useEffect(() => {
-    if (!isTransitioningOut) {
-      setExpanded(!!isCurrentRound);
-    }
-  }, [isCurrentRound, list.length, isTransitioningOut]);
+    setExpanded(!!isCurrentRound);
+  }, [isCurrentRound, list.length]);
 
   return (
     <div className={classNames(`HistoryRound_${headingLog.metaData.round}`)}>
@@ -57,6 +51,7 @@ const HistoryRound = ({
           disabled: isCurrentRound,
         }}
         onClick={() => setExpanded(!expanded)}
+        animate={false}
         components={{
           after: !isCurrentRound && (
             <span className="u-opacity-6">
@@ -78,10 +73,10 @@ const HistoryRound = ({
       />
       <Group
         open={expanded}
-        openByDefault={expanded}
+        openByDefault={false}
         onOpen={handleUpdateScroll}
         onClose={handleUpdateScroll}
-        transitionTime={transitionDur / 2}
+        transitionTime={isCurrentRound ? 1 : transitionDur / 2}
         lazyRender={true}
       >
         <div style={{ paddingTop: 1 }}>
@@ -97,6 +92,7 @@ const HistoryRound = ({
                   <HistoryLog
                     historyLog={historyLog}
                     key={historyIndex}
+                    animate={isCurrentRound}
                     active={historyIndex === currentHistoryIndex}
                     onClick={() => setHistoryIndex(historyIndex)}
                   />
@@ -115,6 +111,7 @@ const HistoryRound = ({
                 iconColor: 'gray',
                 dividerBefore: true,
               }}
+              animate={isCurrentRound}
             />
           )}
         </div>
@@ -166,21 +163,6 @@ const EncounterHistoryFeed = () => {
   }, [list.length]);
 
   ////////////////////////////////
-  // ROUND TRANSITION ANIMATION
-  ////////////////////////////////
-
-  const [isTransitioningOut, setTransitionOut] = useState(false);
-
-  useEffect(() => {
-    if (!!round) {
-      setTransitionOut(true);
-      setTimeout(() => {
-        setTransitionOut(false);
-      }, transitionDur);
-    }
-  }, [round]);
-
-  ////////////////////////////////
   // RETURN
   ////////////////////////////////
 
@@ -196,38 +178,19 @@ const EncounterHistoryFeed = () => {
           <Scrollbars ref={historyScroll}>
             <div className="pl-5 pr-5 pb-5 pt-0">
               <div className="HistoryLogWrap">
-                <div
-                  className={classNames(
-                    'animate__animated animate__faster',
-                    !!isTransitioningOut
-                      ? 'animate__fadeOut'
-                      : 'animate__fadeIn'
-                  )}
-                >
-                  {!!keys(rounds).length &&
-                    keys(rounds).map((historyRoundKey, i) => {
-                      const historyRound = rounds[historyRoundKey];
-                      if (!historyRound) {
-                        return null;
-                      }
-                      return (
-                        <div
-                          key={i}
-                          className={classNames(
-                            isTransitioningOut &&
-                              i === keys(rounds).length - 1 &&
-                              'u-opacity-0'
-                          )}
-                        >
-                          <HistoryRound
-                            historyRound={historyRound}
-                            handleUpdateScroll={handleUpdateScroll}
-                            isTransitioningOut={isTransitioningOut}
-                          />
-                        </div>
-                      );
-                    })}
-                </div>
+                {!!keys(rounds).length &&
+                  keys(rounds).map((historyRoundKey, i) => {
+                    const historyRound = rounds[historyRoundKey];
+                    if (!historyRound) {
+                      return null;
+                    }
+                    return (
+                      <HistoryRound
+                        historyRound={historyRound}
+                        handleUpdateScroll={handleUpdateScroll}
+                      />
+                    );
+                  })}
               </div>
             </div>
           </Scrollbars>
