@@ -178,7 +178,7 @@ const EncounterHistoryFeed = () => {
           <Scrollbars ref={historyScroll}>
             <div className="pl-5 pr-5 pb-5 pt-0">
               <div className="HistoryLogWrap">
-                {!!keys(rounds).length &&
+                {!!keys(rounds).length ? (
                   keys(rounds).map((historyRoundKey, i) => {
                     const historyRound = rounds[historyRoundKey];
                     if (!historyRound) {
@@ -190,7 +190,17 @@ const EncounterHistoryFeed = () => {
                         handleUpdateScroll={handleUpdateScroll}
                       />
                     );
-                  })}
+                  })
+                ) : (
+                  <HistoryLog
+                    historyLog={{
+                      msg: <span className="u-color-gray">No History.</span>,
+                      icon: faEmptySet,
+                      iconColor: 'gray',
+                    }}
+                    animate={true}
+                  />
+                )}
               </div>
             </div>
           </Scrollbars>
