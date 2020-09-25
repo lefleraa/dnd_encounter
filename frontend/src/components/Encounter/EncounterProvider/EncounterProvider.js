@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, createContext } from 'react';
+import React, { useReducer, useEffect, createContext, useState } from 'react';
 import socket from 'socket';
 import find from 'lodash-es/find';
 import noop from 'lodash-es/noop';
@@ -81,6 +81,40 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   } = insights;
 
   /////////////////////////////////////////////////////////
+  // HANDLE WINDOW STATE
+  /////////////////////////////////////////////////////////
+
+  const [activeWindow, setActiveWindow] = useState(false);
+
+  useEffect(() => {
+    const handleSetActiveWindow = () => setActiveWindow(true);
+    const handleClearActiveWindow = () => setActiveWindow(false);
+
+    // ADD ACTIVE WINDOW EVENTS
+    handleSetActiveWindow();
+    window.addEventListener('focus', handleSetActiveWindow, false);
+    window.addEventListener('online', handleSetActiveWindow, false);
+    window.addEventListener('load', handleSetActiveWindow, false);
+
+    // ADD CLEAR ACTIVE WINDOW EVENTS
+    window.addEventListener('blur', handleClearActiveWindow, false);
+    window.addEventListener('offline', handleClearActiveWindow, false);
+    window.addEventListener('unload', handleClearActiveWindow, false);
+
+    return () => {
+      // REMOVE ACTIVE WINDOW EVENTS
+      window.removeEventListener('focus', handleSetActiveWindow, false);
+      window.removeEventListener('online', handleSetActiveWindow, false);
+      window.removeEventListener('load', handleSetActiveWindow, false);
+
+      // REMOVE CLEAR ACTIVE WINDOW EVENTS
+      window.removeEventListener('blur', handleClearActiveWindow, false);
+      window.removeEventListener('offline', handleClearActiveWindow, false);
+      window.removeEventListener('unload', handleClearActiveWindow, false);
+    };
+  }, []);
+
+  /////////////////////////////////////////////////////////
   // KEEP FRONT END EVENTS IN SYNC WITH THE SERVER
   // VIA WEBSOCKET CHANNEL
   /////////////////////////////////////////////////////////
@@ -108,7 +142,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
     return () => {
       leave();
     };
-  }, []);
+  }, [activeWindow]);
 
   /////////////////////////////////////////////////////////
   // HANDLE PUSH EVENT
