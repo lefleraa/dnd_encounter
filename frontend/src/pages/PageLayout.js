@@ -21,7 +21,9 @@ const PageLayout = ({ components = {} }) => {
           </Panel>
         )}
         <Panel scroll={true} className="MainPanel">
-          <Container>{content}</Container>
+          <div className="pt-4 pb-4">
+            <Container>{content}</Container>
+          </div>
         </Panel>
       </Panel>
       {!!panelRight && (

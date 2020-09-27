@@ -96,54 +96,52 @@ const CombatantList = () => {
 
   return (
     <>
-      <div className="pb-5 pt-4 u-width-p-12">
-        <div className="CombatantList p-5 u-overflow-hidden">
-          {!!(list && list.length) ? (
-            <div className="CombatantList__Inner u-pos-relative">
-              {/* COMPLETED COMBATANTS */}
-              {!!(complete && complete.length) &&
-                complete.map((combatant) => {
-                  return (
-                    <Combatant
-                      key={combatant.combatant_id}
-                      combatant={combatant}
-                    />
-                  );
-                })}
-              {/* READY COMBATANTS */}
-              <DragCombatantList list={ready} onDragEnd={onDragEnd} />
-              {/* DEAD COMBATANTS */}
-              {!!(dead && dead.length) &&
-                dead.map((combatant) => {
-                  return (
-                    <Combatant
-                      key={combatant.combatant_id}
-                      combatant={combatant}
-                    />
-                  );
-                })}
-              {/* UNSET INITIATIVE COMBATANTS */}
-              {!!(unset && unset.length) &&
-                unset.map((combatant) => {
-                  return (
-                    <Combatant
-                      key={combatant.combatant_id}
-                      combatant={combatant}
-                    />
-                  );
-                })}
-            </div>
-          ) : (
-            <div className="u-text-center pt-5 pb-5">
-              <Icon icon={faUsersCrown} size="2x" className="u-color-primary" />
-              <p className="mb-0 mt-3 u-color-gray">No Combatants</p>
-              <Btn variant="primary" className="mt-4">
-                <Icon icon={faPlus} className="mr-2" />
-                ADD
-              </Btn>
-            </div>
-          )}
-        </div>
+      <div className="CombatantList p-5 u-overflow-hidden">
+        {!!(list && list.length) ? (
+          <div className="CombatantList__Inner u-pos-relative">
+            {/* COMPLETED COMBATANTS */}
+            {!!(complete && complete.length) &&
+              complete.map((combatant) => {
+                return (
+                  <Combatant
+                    key={combatant.combatant_id}
+                    combatant={combatant}
+                  />
+                );
+              })}
+            {/* READY COMBATANTS */}
+            <DragCombatantList list={ready} onDragEnd={onDragEnd} />
+            {/* DEAD COMBATANTS */}
+            {!!(dead && dead.length) &&
+              dead.map((combatant) => {
+                return (
+                  <Combatant
+                    key={combatant.combatant_id}
+                    combatant={combatant}
+                  />
+                );
+              })}
+            {/* UNSET INITIATIVE COMBATANTS */}
+            {!!(unset && unset.length) &&
+              unset.map((combatant) => {
+                return (
+                  <Combatant
+                    key={combatant.combatant_id}
+                    combatant={combatant}
+                  />
+                );
+              })}
+          </div>
+        ) : (
+          <div className="u-text-center pt-5 pb-5">
+            <Icon icon={faUsersCrown} size="2x" className="u-color-primary" />
+            <p className="mb-0 mt-3 u-color-gray">No Combatants</p>
+            <Btn variant="primary" className="mt-4">
+              <Icon icon={faPlus} className="mr-2" />
+              ADD
+            </Btn>
+          </div>
+        )}
       </div>
       <Drawer isOpen={showDrawer} onHide={() => setShowDrawer(false)}>
         blah
