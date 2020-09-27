@@ -75,14 +75,14 @@ const MainMenu = () => {
           />
         </Menu>
         <Menu heading="Encounters">
-          <Item text="Recent" to="/encounters" />
           <Item text="All" to="/encounters" />
+          <Item text="Recent" to="/encounters" />
           <Item text="Incomplete" to="/encounters" />
           <Item text="Complete" to="/encounters" />
         </Menu>
         <Menu heading="Players">
-          <Item text="Recent" />
           <Item text="All" />
+          <Item text="Recent" />
           <Item text="Dead" />
         </Menu>
         <Menu heading="Settings">

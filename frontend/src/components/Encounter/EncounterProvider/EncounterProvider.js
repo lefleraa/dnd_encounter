@@ -18,7 +18,7 @@ import { initEncounter, encounterReducer } from './encounterReducer';
 import { mockCharacters } from 'mock';
 
 import { triggerToast } from 'components/Toast';
-import { faCheck, faHandPeace } from '@fortawesome/pro-regular-svg-icons';
+import { faAxeBattle, faCheck } from '@fortawesome/pro-regular-svg-icons';
 
 ////////////////////////////
 // CHARACTER LOOKUP
@@ -98,8 +98,8 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
         setWindowState('mounted');
         setActiveWindow(true);
         triggerToast({
-          icon: faHandPeace,
-          text: 'Welcome.',
+          icon: faAxeBattle,
+          text: 'Battle!',
         });
       },
       onFocus: () => {
