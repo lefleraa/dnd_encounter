@@ -1,6 +1,11 @@
 import noop from 'lodash-es/noop';
 
-const socketHelper = ({ channel, event: eventName, onPush = noop }) => {
+const socketHelper = ({
+  channel,
+  event: eventName,
+  onPush = noop,
+  onJoin = noop,
+}) => {
   if (!channel || !eventName) {
     return {};
   }
@@ -17,6 +22,7 @@ const socketHelper = ({ channel, event: eventName, onPush = noop }) => {
       .receive('ok', (resp) => {
         console.log(`Joined channel successfully`, resp);
         connect();
+        onJoin();
       })
       .receive('error', (resp) => {
         console.log(`Unable to join channel`, resp);

@@ -164,7 +164,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
     return () => {
       leave();
     };
-  }, [activeWindow, windowState]);
+  }, [windowState]);
 
   /////////////////////////////////////////////////////////
   // HANDLE PUSH EVENT
