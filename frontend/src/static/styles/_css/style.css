@@ -1,6 +1,7 @@
 @import "../../../../node_modules/bootstrap/dist/css/bootstrap.css";
 @import "../../../../node_modules/react-perfect-scrollbar/dist/css/styles.css";
 @import "../../../../node_modules/animate.css/animate.css";
+@import "../../../../node_modules/toasted-notes/src/styles.css";
 /*///////////////////////////////////////////////*/
 /*                 MASTER COMPILE                */
 /*///////////////////////////////////////////////*/
@@ -735,7 +736,7 @@
   color: #24C875 !important;
 }
 .u-color-success {
-  color: #20A6FC !important;
+  color: #1d9afe !important;
 }
 .u-color-hover-success {
   -webkit-transition: all 0.1s ease-in-out;
@@ -744,7 +745,7 @@
   transition: all 0.1s ease-in-out;
 }
 .u-color-hover-success:hover {
-  color: #20A6FC !important;
+  color: #1d9afe !important;
 }
 .u-color-border {
   color: #dde3ea !important;
@@ -1204,7 +1205,7 @@
   background: #24C875 !important;
 }
 .u-bg-success {
-  background: #20A6FC !important;
+  background: #1d9afe !important;
 }
 .u-bg-hover-success {
   -webkit-transition: all 0.1s ease-in-out;
@@ -1213,7 +1214,7 @@
   transition: all 0.1s ease-in-out;
 }
 .u-bg-hover-success:hover {
-  background: #20A6FC !important;
+  background: #1d9afe !important;
 }
 .u-bg-border {
   background: #dde3ea !important;
@@ -3096,7 +3097,7 @@
   border-color: #24C875 !important;
 }
 .u-border-success {
-  border-color: #20A6FC !important;
+  border-color: #1d9afe !important;
 }
 .u-border-hover-success {
   -webkit-transition: all 0.1s ease-in-out;
@@ -3105,7 +3106,7 @@
   transition: all 0.1s ease-in-out;
 }
 .u-border-hover-success:hover {
-  border-color: #20A6FC !important;
+  border-color: #1d9afe !important;
 }
 .u-border-border {
   border-color: #dde3ea !important;
@@ -4073,19 +4074,19 @@ a:focus {
   color: #e6e6e6;
 }
 .btn.btn-success {
-  background: #20A6FC !important;
-  border-color: #20A6FC !important;
+  background: #1d9afe !important;
+  border-color: #1d9afe !important;
   color: #e6e6e6;
 }
 .btn.btn-success.btn-outline {
-  color: #20A6FC;
+  color: #1d9afe;
 }
 .btn.btn-success:not(.disabled):hover,
 .btn.btn-success:not(.disabled):focus,
 .btn.btn-success:not(.disabled):active,
 .btn.btn-success:not(.disabled).active {
-  background: #52bafd !important;
-  border-color: #52bafd !important;
+  background: #50b1fe !important;
+  border-color: #50b1fe !important;
   color: #e6e6e6;
 }
 .btn.btn-subtle {
@@ -4957,4 +4958,16 @@ ul.Dropdown--Menu {
 }
 .Collapsible .Collapsible__contentOuter {
   padding: 0;
+}
+.Toast {
+  margin: 0;
+}
+.Toaster__message-wrapper {
+  padding: 0;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+.Toaster__manager-bottom-left {
+  padding-left: 10px;
+  padding-bottom: 10px;
 }

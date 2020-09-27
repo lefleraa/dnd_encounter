@@ -1,4 +1,7 @@
 import { useEffect, useLayoutEffect } from 'react';
+import { triggerToast } from 'components/Toast';
+
+import { faWifi, faWifiSlash } from '@fortawesome/pro-regular-svg-icons';
 
 const useWindow = (
   { onMount, onFocus, onBlur, onOnline, onOffline, onLoad, onUnload },
@@ -12,22 +15,53 @@ const useWindow = (
 
   useLayoutEffect(() => {
     if (typeof onFocus === 'function') {
-      window.addEventListener('focus', onFocus);
+      window.addEventListener('focus', () => {
+        onFocus();
+      });
     }
     if (typeof onOnline === 'function') {
-      window.addEventListener('online', onOnline);
+      window.addEventListener('online', () => {
+        onOnline();
+        triggerToast({
+          variant: 'success',
+          icon: faWifi,
+          text: 'Connected.',
+        });
+      });
     }
     if (typeof onLoad === 'function') {
-      window.addEventListener('load', onLoad);
+      window.addEventListener('load', () => {
+        onLoad();
+        // triggerToast({
+        //   text: 'load',
+        // });
+      });
     }
     if (typeof onBlur === 'function') {
-      window.addEventListener('blur', onBlur);
+      window.addEventListener('blur', () => {
+        onBlur();
+        // triggerToast({
+        //   text: 'blur',
+        // });
+      });
     }
     if (typeof onOffline === 'function') {
-      window.addEventListener('offline', onOffline);
+      window.addEventListener('offline', () => {
+        onOffline();
+        triggerToast({
+          variant: 'error',
+          icon: faWifiSlash,
+          text: 'No connection.',
+        });
+      });
     }
     if (typeof onUnload === 'function') {
-      window.addEventListener('unload', onUnload);
+      window.addEventListener('unload', () => {
+        onUnload();
+        // triggerToast({
+        //   text: 'unload',
+        // });
+      });
     }
 
     return () => {

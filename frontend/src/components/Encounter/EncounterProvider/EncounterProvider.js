@@ -17,6 +17,9 @@ import { initEncounter, encounterReducer } from './encounterReducer';
 
 import { mockCharacters } from 'mock';
 
+import { triggerToast } from 'components/Toast';
+import { faCheck, faHandPeace } from '@fortawesome/pro-regular-svg-icons';
+
 ////////////////////////////
 // CHARACTER LOOKUP
 // TODO: Toss on state to ensure more
@@ -94,10 +97,18 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
       onMount: () => {
         setWindowState('mounted');
         setActiveWindow(true);
+        triggerToast({
+          icon: faHandPeace,
+          text: 'Welcome.',
+        });
       },
       onFocus: () => {
         setWindowState('focus');
         setActiveWindow(true);
+        triggerToast({
+          icon: faCheck,
+          text: 'Synced.',
+        });
       },
       onBlur: () => {
         setWindowState('blur');
