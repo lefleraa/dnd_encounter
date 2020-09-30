@@ -15,8 +15,11 @@ defmodule DndEncounterWeb.Router do
 
   scope "/api/v1", DndEncounterWeb do
       pipe_through :api
-      get "/encounters", EncountersController, :index
-  end
+
+      get "/encounters", EncounterController, :index
+      post "/encounters", EncounterController, :create
+      get "/encounters/:id", EncounterController, :show
+    end
 
   scope "/", DndEncounterWeb do
     pipe_through :browser

@@ -1,4 +1,4 @@
-defmodule DndEncounter.EncounterEvent do
+defmodule DndEncounter.EncounterEvents.EncounterEvent do
   alias DndEncounter.{Schema}
   use Schema
   import Ecto.Changeset

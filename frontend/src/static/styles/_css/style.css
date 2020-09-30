@@ -4414,13 +4414,6 @@ ul.Dropdown--Menu {
 .MainMenu__List__Item__Inner:hover .MainMenu__List__Item__Inner__Text {
   color: #e6e6e6;
 }
-.CombatantList {
-  background: #0e1216;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-}
 .CombatantList__Inner {
   margin: -1rem;
 }
@@ -4970,4 +4963,11 @@ ul.Dropdown--Menu {
 .Toaster__manager-bottom-left {
   padding-left: 10px;
   padding-bottom: 10px;
+}
+.Card {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  background: #0e1216;
 }

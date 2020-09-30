@@ -4,6 +4,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Icon from 'atoms/Icon';
 import Btn from 'atoms/Btn';
 import Drawer from 'components/Drawer';
+import Card from 'components/Card';
 import { EncounterContext } from './EncounterProvider';
 import { Combatant } from './Combatant';
 import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';
@@ -96,7 +97,7 @@ const CombatantList = () => {
 
   return (
     <>
-      <div className="CombatantList p-5 u-overflow-hidden">
+      <Card className="CombatantList p-5 u-overflow-hidden">
         {!!(list && list.length) ? (
           <div className="CombatantList__Inner u-pos-relative">
             {/* COMPLETED COMBATANTS */}
@@ -142,7 +143,7 @@ const CombatantList = () => {
             </Btn>
           </div>
         )}
-      </div>
+      </Card>
       <Drawer isOpen={showDrawer} onHide={() => setShowDrawer(false)}>
         blah
       </Drawer>

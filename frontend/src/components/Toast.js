@@ -16,7 +16,7 @@ const Toast = ({ text, icon, variant = 'primary', onClose = noop }) => {
       >
         {icon && (
           <div className="col-auto p-0 pr-3">
-            <Icon icon={icon} className="u-color-white" />
+            <Icon icon={icon} className="u-color-white u-opacity-6" />
           </div>
         )}
         <div className="col p-0">
@@ -24,7 +24,7 @@ const Toast = ({ text, icon, variant = 'primary', onClose = noop }) => {
         </div>
         <div className="col-auto p-0 pl-2">
           <BtnWrap onClick={onClose}>
-            <Icon icon={faTimes} color="white" className="u-opacity-6" fw />
+            <Icon icon={faTimes} color="black" className="u-opacity-2" fw />
           </BtnWrap>
         </div>
       </div>
@@ -32,13 +32,20 @@ const Toast = ({ text, icon, variant = 'primary', onClose = noop }) => {
   );
 };
 
-function triggerToast({ icon, text, variant }) {
+function triggerToast({
+  icon,
+  text,
+  variant,
+  duration = 2000,
+  position = 'bottom-left',
+}) {
   toast.notify(
     ({ onClose }) => (
       <Toast icon={icon} text={text} variant={variant} onClose={onClose} />
     ),
     {
-      position: 'bottom-left',
+      position,
+      duration,
     }
   );
 }

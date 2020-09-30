@@ -1,5 +1,5 @@
 defmodule DndEncounterWeb.EncounterChannel do
-  alias DndEncounter.{Repo, EncounterEvent, Encounter}
+  alias DndEncounter.{EncounterEvents}
   use DndEncounterWeb, :channel
 
   @impl true
@@ -25,15 +25,23 @@ defmodule DndEncounterWeb.EncounterChannel do
   end
 
   def get_events() do
-    %{ events: Encounter.get_events() }
+    %{ events: EncounterEvents.list_encounter_events()
+      |> Enum.map(fn event -> %{
+          id: event.id,
+          timestamp: event.inserted_at,
+          archive: event.archive,
+          type: event.type,
+          payload: event.payload,
+        }
+      end)
+    }
   end
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (encounter:lobby).
   @impl true
   def handle_in("event", payload, socket) do
-    EncounterEvent.changeset(%EncounterEvent{}, payload)
-    |> Repo.insert
+    EncounterEvents.create_encounter_event(payload)
     broadcast(
       socket,
       "event",
@@ -42,6 +50,7 @@ defmodule DndEncounterWeb.EncounterChannel do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_info(:after_join, socket) do
     push(
       socket,

@@ -27,7 +27,7 @@ const useWindow = (
       if (typeof onOnline === 'function') {
         onOnline();
         triggerToast({
-          variant: 'success',
+          variant: 'confirm',
           icon: faWifi,
           text: 'Connected.',
         });
