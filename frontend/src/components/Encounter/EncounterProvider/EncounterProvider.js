@@ -209,6 +209,7 @@ const EncounterProvider = ({
     });
 
     if (activeWindow && windowState !== 'blur' && encounter.id) {
+      console.log('join channel');
       join();
     }
     return () => {
