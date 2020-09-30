@@ -31,4 +31,17 @@ function createEncounter(encounter, options) {
   );
 }
 
-export { getEncounters, createEncounter };
+function deleteEncounter(id, options) {
+  return axiosHelper(
+    {
+      method: 'delete',
+      url: `/encounters/${id}`,
+      transformResponse: (data) => {
+        return data;
+      },
+    },
+    options
+  );
+}
+
+export { getEncounters, createEncounter, deleteEncounter };

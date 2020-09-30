@@ -6,7 +6,7 @@ import Icon from 'atoms/Icon';
 import IconSquare from 'atoms/IconSquare';
 import PageLayout from '../PageLayout';
 
-import { getEncounters, createEncounter } from 'network';
+import { getEncounters, createEncounter, deleteEncounter } from 'network';
 import {
   faMountains,
   faArrowRight,
@@ -14,8 +14,9 @@ import {
 } from '@fortawesome/pro-regular-svg-icons';
 import { faAxeBattle } from '@fortawesome/pro-light-svg-icons';
 
-const Encounter = ({ encounter = {} }) => {
-  const { name } = encounter;
+const Encounter = ({ encounter = {}, ACTIONS = {} }) => {
+  const { id, name } = encounter;
+  const { DELETE } = ACTIONS;
   return (
     <Card className="p-4 mb-3 d-flex align-items-center">
       <div className="col-auto p-0 pr-4">
@@ -23,6 +24,11 @@ const Encounter = ({ encounter = {} }) => {
       </div>
       <div className="col p-0">
         <p className="m-0 u-text-medium">{name || 'Untitled'}</p>
+      </div>
+      <div className="col-auto p-0 pl-4">
+        <Btn variant="subtle" onClick={() => DELETE(id)}>
+          Delete
+        </Btn>
       </div>
       <div className="col-auto p-0 pl-4">
         <Btn>
@@ -37,29 +43,52 @@ const Encounter = ({ encounter = {} }) => {
 const Encounters = () => {
   const [encounters, setEncounters] = useState();
 
-  function getList() {
-    const { promise } = getEncounters();
-    promise.then((response) => {
-      const { data, error } = response;
-      if (data) {
-        console.log(data.data);
-        setEncounters(data.data);
-      }
-    });
-  }
+  const ACTIONS = {
+    GET_LIST: () => {
+      const { promise } = getEncounters();
+      promise.then((response) => {
+        const { data, error } = response;
+        if (data) {
+          setEncounters(data.data);
+        }
+      });
+    },
 
-  function addEncounter() {
-    const { promise } = createEncounter();
-    promise.then((response) => {
-      const { data, error } = response;
-      if (data) {
-        getList();
-      }
-    });
-  }
+    CREATE: () => {
+      const { promise } = createEncounter();
+      promise
+        .then((response) => {
+          const { data, error } = response;
+          if (error) {
+            // on error
+            return;
+          }
+          if (data) {
+            // on success
+          }
+        })
+        .finally(ACTIONS.GET_LIST);
+    },
+
+    DELETE: (id) => {
+      const { promise } = deleteEncounter(id);
+      promise
+        .then((response) => {
+          const { data, error } = response;
+          if (error) {
+            // on error
+            return;
+          }
+          if (data) {
+            // on success
+          }
+        })
+        .finally(ACTIONS.GET_LIST);
+    },
+  };
 
   useEffect(() => {
-    getList();
+    ACTIONS.GET_LIST();
   }, []);
 
   return (
@@ -70,7 +99,7 @@ const Encounters = () => {
             heading="Encounters"
             components={{
               after: (
-                <Btn variant="primary" onClick={addEncounter}>
+                <Btn variant="primary" onClick={ACTIONS.CREATE}>
                   <Icon icon={faPlus} className="mr-2" />
                   ADD ENCOUNTER
                 </Btn>
@@ -86,6 +115,7 @@ const Encounters = () => {
                   <Encounter
                     key={encounter.encounter_id}
                     encounter={encounter}
+                    ACTIONS={ACTIONS}
                   />
                 );
               })
@@ -101,7 +131,7 @@ const Encounters = () => {
                   <Btn
                     variant="primary"
                     className="mt-4"
-                    onClick={addEncounter}
+                    onClick={ACTIONS.CREATE}
                   >
                     <Icon icon={faPlus} className="mr-2" />
                     ADD

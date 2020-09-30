@@ -19,6 +19,7 @@ defmodule DndEncounterWeb.Router do
       get "/encounters", EncounterController, :index
       post "/encounters", EncounterController, :create
       get "/encounters/:id", EncounterController, :show
+      delete "/encounters/:id", EncounterController, :delete
     end
 
   scope "/", DndEncounterWeb do
