@@ -71,10 +71,7 @@ const EncounterProvider = ({
   encounterId,
   pushConfirmationModal = noop,
 }) => {
-  const {
-    // combatant_turn_start,
-    combatant_dead,
-  } = eventHandlers;
+  const { combatant_turn_start, combatant_dead } = eventHandlers;
 
   const [eventState, dispatchLocalEvents] = useReducer(
     eventReducer,
@@ -86,10 +83,7 @@ const EncounterProvider = ({
     encounterReducer,
     initEncounter
   );
-  const {
-    // round,
-    history = {},
-  } = encounter;
+  const { round, history = {} } = encounter;
 
   const { combatants = {}, insights = {} } = useEncounterInsights({
     encounter,
@@ -97,8 +91,8 @@ const EncounterProvider = ({
   });
   const {
     onMostRecentEvent,
-    // activeCombatant,
-    // activeCombatantCandidate,
+    activeCombatant,
+    activeCombatantCandidate,
   } = insights;
 
   /////////////////////////////////////////////////////////
@@ -221,19 +215,20 @@ const EncounterProvider = ({
   // HANDLE PUSH EVENT
   /////////////////////////////////////////////////////////
 
+  const handleEventPush = ({ event, callback = noop }) => {
+    // optimistic push to prevent a UI flash when rebuilding state
+    // from scratch when the channel version arrives
+    runEncounterEvent(event);
+    // channel broadcast
+    ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, event);
+    callback();
+  };
+
   const dispatchEvent = (event, options) => {
-    const { callback = noop } = options || {};
-    const handlePush = () => {
-      // optimistic push to prevent a UI flash when rebuilding state
-      // from scratch when the channel version arrives
-      runEncounterEvent(event);
-      // channel broadcast
-      ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, event);
-      callback();
-    };
+    const { callback } = options || {};
 
     if (!!onMostRecentEvent) {
-      handlePush();
+      handleEventPush({ event, callback });
     } else {
       pushConfirmationModal({
         variant: 'error',
@@ -242,10 +237,36 @@ const EncounterProvider = ({
         text: 'A past action is currently selected.',
         detail: 'This will overwrite actions in your history.',
         confirmText: 'Continue',
-        action: handlePush,
+        action: () => handleEventPush({ event, callback }),
       });
     }
   };
+
+  /////////////////////////////////////////////////////////
+  // ENSURE ACTIVE CANDIDATE
+  /////////////////////////////////////////////////////////
+
+  function checkForActiveCombatant() {
+    if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
+      return;
+    }
+
+    if (
+      !activeCombatant ||
+      activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
+    ) {
+      dispatchEvent({
+        type: combatant_turn_start.type,
+        payload: {
+          combatant_id: activeCombatantCandidate.combatant_id,
+        },
+      });
+    }
+  }
+
+  // useEffect(() => {
+  //   checkForActiveCombatant();
+  // }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
 
   /////////////////////////////////////////////////////////
   // HYDRATE STATE VIA EVENTS:
@@ -292,28 +313,6 @@ const EncounterProvider = ({
       runEncounterEvent(event, i);
     });
   }, [events]);
-
-  /////////////////////////////////////////////////////////
-  // ENSURE ACTIVE CANDIDATE
-  /////////////////////////////////////////////////////////
-
-  // useEffect(() => {
-  //   if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
-  //     return;
-  //   }
-
-  //   if (
-  //     !activeCombatant ||
-  //     activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
-  //   ) {
-  //     dispatchEvent({
-  //       type: combatant_turn_start.type,
-  //       payload: {
-  //         combatant_id: activeCombatantCandidate.combatant_id,
-  //       },
-  //     });
-  //   }
-  // }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
 
   /////////////////////////////////////////////////////////
   // ACTIONS
