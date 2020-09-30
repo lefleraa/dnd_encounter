@@ -143,6 +143,7 @@ const EncounterProvider = ({
 
   useWindow(
     {
+      enableListeners: !!encounter.id,
       onMount: () => {
         setWindowState('mounted');
         setActiveWindow(true);
@@ -180,7 +181,7 @@ const EncounterProvider = ({
         setActiveWindow(false);
       },
     },
-    []
+    [encounter.id]
   );
 
   /////////////////////////////////////////////////////////
@@ -207,7 +208,7 @@ const EncounterProvider = ({
       },
     });
 
-    if (activeWindow) {
+    if (activeWindow && windowState !== 'blur' && encounter.id) {
       join();
     }
     return () => {
