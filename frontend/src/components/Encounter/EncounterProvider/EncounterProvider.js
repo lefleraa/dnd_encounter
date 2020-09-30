@@ -10,15 +10,21 @@ import { useWindow } from 'hooks';
 import combatantTypes from 'data/combatantTypes';
 import combatantStatuses from 'data/combatantStatuses';
 import useEncounterInsights from './useEncounterInsights';
-import { faHistory } from '@fortawesome/pro-light-svg-icons';
 
 import { initEvents, eventReducer } from './eventReducer';
 import { initEncounter, encounterReducer } from './encounterReducer';
 
 import { mockCharacters } from 'mock';
+import { getEncounter } from 'network';
 
 import { triggerToast } from 'components/Toast';
-import { faAxeBattle, faCheck } from '@fortawesome/pro-regular-svg-icons';
+import InterfaceState from 'components/InterfaceState';
+import { faHistory } from '@fortawesome/pro-light-svg-icons';
+import {
+  faAxeBattle,
+  faCheck,
+  faArrowLeft,
+} from '@fortawesome/pro-regular-svg-icons';
 
 ////////////////////////////
 // CHARACTER LOOKUP
@@ -60,8 +66,15 @@ const ENCOUNTER_STREAM = {
 // ENCOUNTER PROVIDER
 ////////////////////////////
 
-const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
-  const { combatant_turn_start, combatant_dead } = eventHandlers;
+const EncounterProvider = ({
+  children,
+  encounterId,
+  pushConfirmationModal = noop,
+}) => {
+  const {
+    // combatant_turn_start,
+    combatant_dead,
+  } = eventHandlers;
 
   const [eventState, dispatchLocalEvents] = useReducer(
     eventReducer,
@@ -73,7 +86,10 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
     encounterReducer,
     initEncounter
   );
-  const { round, history = {} } = encounter;
+  const {
+    // round,
+    history = {},
+  } = encounter;
 
   const { combatants = {}, insights = {} } = useEncounterInsights({
     encounter,
@@ -81,9 +97,42 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   });
   const {
     onMostRecentEvent,
-    activeCombatant,
-    activeCombatantCandidate,
+    // activeCombatant,
+    // activeCombatantCandidate,
   } = insights;
+
+  /////////////////////////////////////////////////////////
+  // GET ENCOUNTER
+  /////////////////////////////////////////////////////////
+
+  const [loading, setLoading] = useState(false);
+
+  function fetchEncounter(id) {
+    setLoading(true);
+    const { promise } = getEncounter(id);
+    promise
+      .then((response) => {
+        const { data, error } = response;
+        if (error) {
+          // on error
+          return;
+        }
+        if (data.data) {
+          // on success
+          dispatchEncounter({
+            type: 'setEncounter',
+            payload: data.data,
+          });
+        }
+      })
+      .finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    if (encounterId) {
+      fetchEncounter(encounterId);
+    }
+  }, [encounterId]);
 
   /////////////////////////////////////////////////////////
   // HANDLE WINDOW STATE
@@ -203,10 +252,7 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
     // the entirety of the events each time
     // a new event is pushed.
     dispatchEncounter({
-      type: 'setEncounter',
-      payload: {
-        ...initEncounter,
-      },
+      type: 'clearEncounter',
     });
 
     events.forEach((event, i) => {
@@ -302,6 +348,29 @@ const EncounterProvider = ({ children, pushConfirmationModal = noop }) => {
   /////////////////////////////////////////////////////////
   // RETURN
   /////////////////////////////////////////////////////////
+
+  if (!!loading) {
+    return (
+      <InterfaceState
+        text="Loading Encounter..."
+        loading={true}
+        pageLayout={true}
+      />
+    );
+  }
+
+  if (!encounter.id) {
+    return (
+      <InterfaceState
+        text="No encounter found."
+        icon={faAxeBattle}
+        btnText="Encounters"
+        btnIcon={faArrowLeft}
+        btnTo="/encounters"
+        pageLayout={true}
+      />
+    );
+  }
 
   return (
     <EncounterContext.Provider

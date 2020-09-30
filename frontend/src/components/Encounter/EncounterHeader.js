@@ -209,12 +209,17 @@ const RoundIncrementor = () => {
 };
 
 const EncounterHeader = () => {
+  const encounterContext = useContext(EncounterContext);
+  const { encounter = {} } = encounterContext;
+  const { name } = encounter;
+
   return (
     <Header
-      heading="Battle at the Banks"
+      heading={name || 'Untitled'}
       components={{
         backBtn: {
           text: 'Encounters',
+          path: '/encounters',
         },
         after: (
           <>

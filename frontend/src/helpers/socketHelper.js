@@ -11,33 +11,33 @@ const socketHelper = ({
   }
 
   const connect = () => {
-    console.log(`Connected to channel`);
+    // console.log(`Connected to channel`);
     channel.on(eventName, onPush);
   };
 
   const join = () => {
-    console.log(`Attempting to join channel`);
+    // console.log(`Attempting to join channel`);
     channel
       .join()
       .receive('ok', (resp) => {
-        console.log(`Joined channel successfully`, resp);
+        // console.log(`Joined channel successfully`, resp);
         connect();
         onJoin();
       })
       .receive('error', (resp) => {
-        console.log(`Unable to join channel`, resp);
+        // console.log(`Unable to join channel`, resp);
       });
   };
 
   const leave = () => {
-    console.log(`Attempting to leave channel`);
+    // console.log(`Attempting to leave channel`);
     channel
       .leave()
       .receive('ok', (resp) => {
-        console.log(`Left channel successfully`, resp);
+        // console.log(`Left channel successfully`, resp);
       })
       .receive('error', (resp) => {
-        console.log(`Unable to leave channel`, resp);
+        // console.log(`Unable to leave channel`, resp);
       });
   };
 

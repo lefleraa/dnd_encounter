@@ -32,10 +32,7 @@ const App = () => {
               <Route path="/encounters">
                 <Encounters />
               </Route>
-              <Route path="/encounter">
-                <Encounter />
-              </Route>
-              <Route path="/encounter_dm">
+              <Route path="/encounter/:id?">
                 <EncounterDM />
               </Route>
             </Switch>

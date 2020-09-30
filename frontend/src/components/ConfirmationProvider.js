@@ -82,11 +82,7 @@ const ConfirmModal = ({
         </Modal.Body>
       )}
       <Modal.Footer>
-        <Btn
-          variant="default"
-          className="mr-1"
-          onClick={() => setIsOpen(false)}
-        >
+        <Btn variant="subtle" className="mr-1" onClick={() => setIsOpen(false)}>
           {cancelText}
         </Btn>
         <Btn

@@ -7,12 +7,15 @@ import {
   EncounterHistoryFeed,
 } from 'components/Encounter';
 import PageLayout from '../PageLayout';
+import { useParams } from 'react-router-dom';
 
 const EncounterDM = () => {
+  let { id } = useParams();
+
   return (
     <ConfirmationProvider>
       {({ actions }) => (
-        <EncounterProvider {...actions}>
+        <EncounterProvider {...actions} encounterId={id}>
           <PageLayout
             components={{
               header: <EncounterHeader />,

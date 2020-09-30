@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from 'components/Header';
-import EmptyState from 'components/EmptyState';
+import InterfaceState from 'components/InterfaceState';
 import Card from 'components/Card';
 import Btn from 'atoms/Btn';
+import BtnWrap from 'atoms/BtnWrap';
 import Icon from 'atoms/Icon';
 import IconSquare from 'atoms/IconSquare';
 import PageLayout from '../PageLayout';
@@ -17,21 +18,28 @@ import { faAxeBattle } from '@fortawesome/pro-light-svg-icons';
 const Encounter = ({ encounter = {}, ACTIONS = {} }) => {
   const { id, name, started } = encounter;
   const { DELETE } = ACTIONS;
+
+  const toPath = `/encounter/${id}`;
+
   return (
-    <Card className="p-4 mb-3 d-flex align-items-center">
-      <div className="col-auto p-0 pr-4">
-        <IconSquare icon={faMountains} />
-      </div>
-      <div className="col p-0">
-        <p className="m-0 u-text-medium">{name || 'Untitled'}</p>
-      </div>
-      <div className="col-auto p-0 pl-4">
+    <Card className="p-0 mb-3 d-flex align-items-center">
+      <BtnWrap to={toPath} className="col p-4 d-flex align-items-center">
+        <div className="col-auto p-0 pr-4">
+          <IconSquare icon={faMountains} className="u-color-primary" />
+        </div>
+        <div className="col p-0">
+          <p className="m-0 u-text-medium u-color-white">
+            {name || 'Untitled'}
+          </p>
+        </div>
+      </BtnWrap>
+      <div className="col-auto p-0">
         <Btn variant="subtle" onClick={() => DELETE(id)}>
           Delete
         </Btn>
       </div>
-      <div className="col-auto p-0 pl-2">
-        <Btn variant={!!started ? 'primary' : 'default'}>
+      <div className="col-auto p-0 pl-2 pr-4">
+        <Btn variant={!!started ? 'primary' : 'default'} to={toPath}>
           {!!started ? 'Continue' : 'Start'}
           <Icon icon={faArrowRight} className="ml-2" />
         </Btn>
@@ -124,7 +132,7 @@ const Encounters = () => {
                 );
               })
             ) : (
-              <EmptyState
+              <InterfaceState
                 icon={faAxeBattle}
                 text="No Encounters"
                 btnText="ADD ENCOUNTER"

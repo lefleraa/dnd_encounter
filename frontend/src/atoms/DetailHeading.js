@@ -5,7 +5,7 @@ const DetailHeading = ({ className, children, style, ...rest }) => {
   return (
     <p
       className={classNames(
-        'DetailHeading m-0 u-text-uppercase small u-text-medium u-color-gray-light',
+        'DetailHeading m-0 u-text-uppercase small u-text-medium',
         className
       )}
       style={{

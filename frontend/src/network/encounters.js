@@ -31,6 +31,19 @@ function createEncounter(encounter, options) {
   );
 }
 
+function getEncounter(id, options) {
+  return axiosHelper(
+    {
+      method: 'get',
+      url: `/encounters/${id}`,
+      transformResponse: (data) => {
+        return data;
+      },
+    },
+    options
+  );
+}
+
 function deleteEncounter(id, options) {
   return axiosHelper(
     {
@@ -44,4 +57,4 @@ function deleteEncounter(id, options) {
   );
 }
 
-export { getEncounters, createEncounter, deleteEncounter };
+export { getEncounters, createEncounter, getEncounter, deleteEncounter };

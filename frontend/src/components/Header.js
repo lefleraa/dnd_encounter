@@ -2,6 +2,7 @@ import React from 'react';
 import Container from 'components/Container';
 import Icon from 'atoms/Icon';
 import DetailHeading from 'atoms/DetailHeading';
+import BtnWrap from 'atoms/BtnWrap';
 import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
 
 ////////////////////////
@@ -16,14 +17,19 @@ const Header = ({ heading, components = {} }) => {
         <div className="d-flex align-items-center">
           <div className="col p-0">
             {!!backBtn && (
-              <div className="d-inline-flex align-items-center u-color-gray-light">
+              <BtnWrap
+                className="d-inline-flex align-items-center u-color-gray-light u-color-hover-primary"
+                to={backBtn.path}
+              >
                 <div className="col-auto pl-0 pr-3">
                   <Icon icon={faAngleLeft} />
                 </div>
                 <div className="col p-0">
-                  <DetailHeading>{backBtn.text}</DetailHeading>
+                  <DetailHeading className="u-color-hover-primary">
+                    {backBtn.text}
+                  </DetailHeading>
                 </div>
-              </div>
+              </BtnWrap>
             )}
             <h1 className="m-0 u-text-medium">{heading}</h1>
           </div>

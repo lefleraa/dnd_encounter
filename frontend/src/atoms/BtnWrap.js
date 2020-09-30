@@ -1,8 +1,7 @@
 import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import cleanProps from 'clean-react-props';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const propTypes = {
   type: PropTypes.oneOf(['button', 'reset', 'submit', null]),
@@ -37,12 +36,13 @@ const BtnWrap = forwardRef(
       block,
       display = 'inline-block',
       label,
+      to,
       ...rest
     },
     ref
   ) => {
-    const Tag = rest.to
-      ? Link
+    const Tag = to
+      ? NavLink
       : rest.href
       ? 'a'
       : rest.naked
@@ -63,6 +63,8 @@ const BtnWrap = forwardRef(
 
     return (
       <Tag
+        {...rest}
+        to={to}
         aria-label={label}
         type={type}
         className={classes}
@@ -77,7 +79,6 @@ const BtnWrap = forwardRef(
           WebkitAppearance: 'none',
           MozAppearance: 'none',
         }}
-        {...cleanProps(rest)}
         ref={ref}
       >
         {children}

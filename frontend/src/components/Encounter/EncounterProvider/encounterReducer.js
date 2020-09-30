@@ -5,13 +5,20 @@ import eventHandlers from './eventHandlers';
 // REDUCER
 ////////////////////////////////
 
-const initEncounter = {
+const initEventBasedEncounterState = {
   round: 0,
   combatants: [],
   history: {
     list: [],
   },
+};
+
+const initEncounter = {
+  id: undefined,
+  name: undefined,
+  started: false,
   character_lookup: {},
+  ...initEventBasedEncounterState,
 };
 
 const {
@@ -46,8 +53,16 @@ function encounterReducer(throughState, action) {
   switch (type) {
     case 'resetEncounter':
       return { ...initEncounter };
+    case 'clearEncounter':
+      return {
+        ...state,
+        ...initEventBasedEncounterState,
+      };
     case 'setEncounter':
-      return payload;
+      return {
+        ...state,
+        ...payload,
+      };
     case 'setCombatants':
       return {
         ...state,

@@ -3,7 +3,7 @@ import noop from 'lodash-es/noop';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import Drawer from 'components/Drawer';
 import Card from 'components/Card';
-import EmptyState from 'components/EmptyState';
+import InterfaceState from 'components/InterfaceState';
 import { EncounterContext } from './EncounterProvider';
 import { Combatant } from './Combatant';
 import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';
@@ -133,7 +133,7 @@ const CombatantList = () => {
           </div>
         </Card>
       ) : (
-        <EmptyState
+        <InterfaceState
           icon={faUsersCrown}
           text="No Combatants"
           btnText="ADD COMBATANT"

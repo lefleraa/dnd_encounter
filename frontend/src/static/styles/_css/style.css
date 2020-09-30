@@ -3636,7 +3636,11 @@
 a,
 a:hover,
 a:focus {
+  color: #5628ee;
   text-decoration: none;
+}
+.DetailHeading {
+  color: #98acbe;
 }
 .btn {
   display: inline-flex;
@@ -4092,7 +4096,7 @@ a:focus {
 .btn.btn-subtle {
   background: none !important;
   border-color: none !important;
-  color: #4816ed;
+  color: #e6e6e6;
 }
 .btn.btn-subtle.btn-outline {
   color: none;
@@ -4103,7 +4107,7 @@ a:focus {
 .btn.btn-subtle:not(.disabled).active {
   background: none !important;
   border-color: none !important;
-  color: #380fc0;
+  color: #3e11d2;
 }
 .btn.btn-outline {
   background: none !important;

@@ -70,7 +70,7 @@ const MainMenu = () => {
           <Item
             icon={faPlayCircle}
             text="Active"
-            to="/encounter_dm"
+            to="/encounter"
             style={{ marginTop: 15 }}
           />
         </Menu>
