@@ -1,14 +1,12 @@
 import React, { useContext, useState } from 'react';
 import noop from 'lodash-es/noop';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import Icon from 'atoms/Icon';
-import Btn from 'atoms/Btn';
 import Drawer from 'components/Drawer';
 import Card from 'components/Card';
+import EmptyState from 'components/EmptyState';
 import { EncounterContext } from './EncounterProvider';
 import { Combatant } from './Combatant';
 import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';
-import { faPlus } from '@fortawesome/pro-regular-svg-icons';
 
 const DragCombatantList = ({ list, onDragEnd }) => {
   return (
@@ -97,8 +95,8 @@ const CombatantList = () => {
 
   return (
     <>
-      <Card className="CombatantList p-5 u-overflow-hidden">
-        {!!(list && list.length) ? (
+      {!!(list && list.length) ? (
+        <Card className="CombatantList p-5 u-overflow-hidden">
           <div className="CombatantList__Inner u-pos-relative">
             {/* COMPLETED COMBATANTS */}
             {!!(complete && complete.length) &&
@@ -133,17 +131,14 @@ const CombatantList = () => {
                 );
               })}
           </div>
-        ) : (
-          <div className="u-text-center pt-5 pb-5">
-            <Icon icon={faUsersCrown} size="2x" className="u-color-primary" />
-            <p className="mb-0 mt-3 u-color-gray">No Combatants</p>
-            <Btn variant="primary" className="mt-4">
-              <Icon icon={faPlus} className="mr-2" />
-              ADD
-            </Btn>
-          </div>
-        )}
-      </Card>
+        </Card>
+      ) : (
+        <EmptyState
+          icon={faUsersCrown}
+          text="No Combatants"
+          btnText="ADD COMBATANT"
+        />
+      )}
       <Drawer isOpen={showDrawer} onHide={() => setShowDrawer(false)}>
         blah
       </Drawer>
