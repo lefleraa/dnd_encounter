@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash-es/cloneDeep';
 import sortBy from 'lodash-es/sortBy';
+import concat from 'lodash-es/concat';
 
 const initEvents = {
   events: [],

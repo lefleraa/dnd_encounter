@@ -208,7 +208,7 @@ const EncounterProvider = ({
       },
     });
 
-    if (activeWindow && windowState !== 'blur' && encounter.id) {
+    if (activeWindow && encounter.id) {
       console.log('join channel');
       join();
     }
@@ -224,6 +224,10 @@ const EncounterProvider = ({
   const dispatchEvent = (event, options) => {
     const { callback = noop } = options || {};
     const handlePush = () => {
+      // optimistic push to prevent a UI flash when rebuilding state
+      // from scratch when the channel version arrives
+      runEncounterEvent(event);
+      // channel broadcast
       ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, event);
       callback();
     };
@@ -248,6 +252,33 @@ const EncounterProvider = ({
   // Re-runs every time an event is pushed.
   /////////////////////////////////////////////////////////
 
+  function runEncounterEvent(event, i) {
+    const { payload = {} } = event;
+    const { combatant_id } = payload;
+
+    // ADD CHARACTER LOOKUPS
+    addCharacterLookup({ combatant_id });
+
+    // FORM ALL ENCOUNTER STATE FROM EVENT DATA
+    if (eventHandlers[event.type]) {
+      const action = {
+        ...event,
+      };
+
+      if (i !== undefined) {
+        action.metaData = {
+          historyIndex: i,
+          event,
+        };
+        action.config = {
+          snapshot: !!(i > currentEventIndex) ? true : false,
+        };
+      }
+
+      dispatchEncounter(action);
+    }
+  }
+
   useEffect(() => {
     // CLEAR STATE AFTER EACH EVENT PUSH
     // reset state since we will always run through
@@ -258,25 +289,7 @@ const EncounterProvider = ({
     });
 
     events.forEach((event, i) => {
-      const { payload = {} } = event;
-      const { combatant_id } = payload;
-
-      // ADD CHARACTER LOOKUPS
-      addCharacterLookup({ combatant_id });
-
-      // FORM ALL ENCOUNTER STATE FROM EVENT DATA
-      if (eventHandlers[event.type]) {
-        dispatchEncounter({
-          ...event,
-          metaData: {
-            historyIndex: i,
-            event,
-          },
-          config: {
-            snapshot: !!(i > currentEventIndex) ? true : false,
-          },
-        });
-      }
+      runEncounterEvent(event, i);
     });
   }, [events]);
 

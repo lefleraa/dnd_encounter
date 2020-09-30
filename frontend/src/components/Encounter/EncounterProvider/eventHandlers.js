@@ -31,10 +31,13 @@ const historyLog = {
   heading: undefined,
 };
 
-const pushToHistory = ({ state = {}, metaData = {}, snapshot, historyLog }) => {
+const pushToHistory = ({ state = {}, metaData, snapshot, historyLog }) => {
   const { history = {} } = state;
-
   let throughState = state;
+
+  if (typeof metaData !== 'object') {
+    return throughState;
+  }
 
   // If createSnapshot is true, ignore the new state
   // as defined by the reducer function and use the
