@@ -214,7 +214,7 @@ const EncounterProvider = ({
     return () => {
       leave();
     };
-  }, [windowState]);
+  }, [windowState, encounter.id]);
 
   /////////////////////////////////////////////////////////
   // HANDLE PUSH EVENT
