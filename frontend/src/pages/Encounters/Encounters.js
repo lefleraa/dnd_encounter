@@ -55,7 +55,7 @@ const Encounters = () => {
     GET_LIST: () => {
       const { promise } = getEncounters();
       promise.then((response) => {
-        const { data, error } = response;
+        const { data, error } = response || {};
         if (data) {
           setEncounters(data.data);
         }
@@ -66,7 +66,7 @@ const Encounters = () => {
       const { promise } = createEncounter();
       promise
         .then((response) => {
-          const { data, error } = response;
+          const { data, error } = response || {};
           if (error) {
             // on error
             return;
@@ -82,7 +82,7 @@ const Encounters = () => {
       const { promise } = deleteEncounter(id);
       promise
         .then((response) => {
-          const { data, error } = response;
+          const { data, error } = response || {};
           if (error) {
             // on error
             return;

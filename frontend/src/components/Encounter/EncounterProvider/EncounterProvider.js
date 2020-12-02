@@ -106,16 +106,30 @@ const EncounterProvider = ({
     const { promise } = getEncounter(id);
     promise
       .then((response) => {
-        const { data, error } = response;
+        const { data, error } = response || {};
         if (error) {
           // on error
           return;
         }
         if (data.data) {
+          const { id, name, started, encounter_events = [] } = data.data;
           // on success
           dispatchEncounter({
             type: 'setEncounter',
-            payload: data.data,
+            payload: {
+              id,
+              name,
+              started,
+            },
+          });
+          dispatchLocalEvents({
+            type: 'setEvents',
+            payload: encounter_events.map((event) => {
+              return {
+                ...event,
+                payload: event.payload || {},
+              };
+            }),
           });
         }
       })
@@ -189,10 +203,11 @@ const EncounterProvider = ({
     const { join = noop, leave = noop } = socketHelper({
       channel: ENCOUNTER_STREAM.CHANNEL,
       event: ENCOUNTER_STREAM.PUSH_EVENT,
-      onPush: ({ events }) => {
+      onPush: ({ encounter = {} }) => {
+        const { encounter_events = [] } = encounter;
         dispatchLocalEvents({
           type: 'setEvents',
-          payload: events.map((event) => {
+          payload: encounter_events.map((event) => {
             return {
               ...event,
               payload: event.payload || {},
@@ -203,7 +218,6 @@ const EncounterProvider = ({
     });
 
     if (activeWindow && encounter.id) {
-      console.log('join channel');
       join();
     }
     return () => {
@@ -220,7 +234,14 @@ const EncounterProvider = ({
     // from scratch when the channel version arrives
     runEncounterEvent(event);
     // channel broadcast
-    ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, event);
+    const streamedEvent = {
+      ...event,
+      payload: event.payload || null,
+      encounter_id: encounter.id,
+    };
+    console.log('PUSHED EVENT:');
+    console.log(streamedEvent);
+    ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, streamedEvent);
     callback();
   };
 
@@ -246,23 +267,23 @@ const EncounterProvider = ({
   // ENSURE ACTIVE CANDIDATE
   /////////////////////////////////////////////////////////
 
-  function checkForActiveCombatant() {
-    if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
-      return;
-    }
+  // function checkForActiveCombatant() {
+  //   if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
+  //     return;
+  //   }
 
-    if (
-      !activeCombatant ||
-      activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
-    ) {
-      dispatchEvent({
-        type: combatant_turn_start.type,
-        payload: {
-          combatant_id: activeCombatantCandidate.combatant_id,
-        },
-      });
-    }
-  }
+  //   if (
+  //     !activeCombatant ||
+  //     activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
+  //   ) {
+  //     dispatchEvent({
+  //       type: combatant_turn_start.type,
+  //       payload: {
+  //         combatant_id: activeCombatantCandidate.combatant_id,
+  //       },
+  //     });
+  //   }
+  // }
 
   // useEffect(() => {
   //   checkForActiveCombatant();

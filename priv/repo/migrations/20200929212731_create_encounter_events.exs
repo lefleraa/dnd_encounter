@@ -6,6 +6,7 @@ defmodule DndEncounter.Repo.Migrations.CreateEncounterEvents do
       add :type, :string
       add :payload, :map
       add :archive, :boolean, default: false, null: false
+      add :encounter_id, references(:encounters)
 
       timestamps()
     end

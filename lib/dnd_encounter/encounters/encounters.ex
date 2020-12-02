@@ -35,7 +35,9 @@ defmodule DndEncounter.Encounters do
       ** (Ecto.NoResultsError)
 
   """
-  def get_encounter!(id), do: Repo.get!(Encounter, id)
+  def get_encounter!(id) do
+    event = Repo.get!(Encounter, id)
+  end
 
   @doc """
   Creates a encounter.

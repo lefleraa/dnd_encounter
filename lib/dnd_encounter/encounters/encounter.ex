@@ -7,6 +7,8 @@ defmodule DndEncounter.Encounters.Encounter do
     field :name, :string
     field :started, :boolean, default: false
 
+    has_many :encounter_events, DndEncounter.EncounterEvents.EncounterEvent
+
     timestamps()
   end
 

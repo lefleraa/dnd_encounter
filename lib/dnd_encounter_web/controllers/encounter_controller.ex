@@ -1,6 +1,7 @@
 defmodule DndEncounterWeb.EncounterController do
   use DndEncounterWeb, :controller
 
+  alias DndEncounter.Repo
   alias DndEncounter.Encounters
   alias DndEncounter.Encounters.Encounter
 
@@ -21,7 +22,9 @@ defmodule DndEncounterWeb.EncounterController do
   end
 
   def show(conn, %{"id" => id}) do
-    encounter = Encounters.get_encounter!(id)
+    encounter =
+      Encounters.get_encounter!(id)
+      |> Repo.preload([:encounter_events])
     render(conn, "show.json", encounter: encounter)
   end
 

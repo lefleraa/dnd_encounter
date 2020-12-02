@@ -8,13 +8,15 @@ defmodule DndEncounter.EncounterEvents.EncounterEvent do
     field :payload, :map
     field :type, :string
 
+    belongs_to :encounter, DndEncounter.Encounters.Encounter
+
     timestamps()
   end
 
   @doc false
   def changeset(encounter_event, attrs) do
     encounter_event
-    |> cast(attrs, [:type, :payload, :archive])
-    |> validate_required([:type])
+    |> cast(attrs, [:type, :payload, :archive, :encounter_id])
+    |> validate_required([:type, :encounter_id])
   end
 end
