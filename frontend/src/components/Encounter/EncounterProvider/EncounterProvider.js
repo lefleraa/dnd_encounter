@@ -232,7 +232,7 @@ const EncounterProvider = ({
   const handleEventPush = ({ event, callback = noop }) => {
     // optimistic push to prevent a UI flash when rebuilding state
     // from scratch when the channel version arrives
-    runEncounterEvent(event);
+    // runEncounterEvent(event);
     // channel broadcast
     const streamedEvent = {
       ...event,
@@ -267,27 +267,33 @@ const EncounterProvider = ({
   // ENSURE ACTIVE CANDIDATE
   /////////////////////////////////////////////////////////
 
-  // function checkForActiveCombatant() {
-  //   if (!round || !activeCombatantCandidate || !onMostRecentEvent) {
-  //     return;
-  //   }
+  function checkForActiveCombatant({
+    activeCombatant = {},
+    activeCombatantCandidate = {},
+  }) {
+    const { combatant_id } = activeCombatantCandidate;
 
-  //   if (
-  //     !activeCombatant ||
-  //     activeCombatant.combatant_id !== activeCombatantCandidate.combatant_id
-  //   ) {
-  //     dispatchEvent({
-  //       type: combatant_turn_start.type,
-  //       payload: {
-  //         combatant_id: activeCombatantCandidate.combatant_id,
-  //       },
-  //     });
-  //   }
-  // }
+    if (
+      !round ||
+      !onMostRecentEvent ||
+      !activeCombatantCandidate.combatant_id ||
+      combatant_id === activeCombatant.combatant_id
+    ) {
+      return;
+    }
 
-  // useEffect(() => {
-  //   checkForActiveCombatant();
-  // }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
+    dispatchEvent({
+      type: combatant_turn_start.type,
+      payload: { combatant_id },
+    });
+  }
+
+  useEffect(() => {
+    checkForActiveCombatant({
+      activeCombatant,
+      activeCombatantCandidate,
+    });
+  }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
 
   /////////////////////////////////////////////////////////
   // HYDRATE STATE VIA EVENTS:
