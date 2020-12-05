@@ -197,6 +197,8 @@ const EncounterProvider = ({
   // VIA WEBSOCKET CHANNEL
   /////////////////////////////////////////////////////////
 
+  const [safeToPush, setSafeToPush] = useState(false);
+
   useEffect(() => {
     ENCOUNTER_STREAM.CHANNEL = socket.channel(ENCOUNTER_STREAM.NAME, {});
 
@@ -214,6 +216,7 @@ const EncounterProvider = ({
             };
           }),
         });
+        setSafeToPush(true);
       },
     });
 
@@ -232,7 +235,8 @@ const EncounterProvider = ({
   const handleEventPush = ({ event, callback = noop }) => {
     // optimistic push to prevent a UI flash when rebuilding state
     // from scratch when the channel version arrives
-    // runEncounterEvent(event);
+    setSafeToPush(false);
+    runEncounterEvent(event);
     // channel broadcast
     const streamedEvent = {
       ...event,
@@ -267,16 +271,17 @@ const EncounterProvider = ({
   // ENSURE ACTIVE CANDIDATE
   /////////////////////////////////////////////////////////
 
-  function checkForActiveCombatant({
+  function setActiveCombatant({
     activeCombatant = {},
     activeCombatantCandidate = {},
   }) {
     const { combatant_id } = activeCombatantCandidate;
 
     if (
+      !safeToPush ||
       !round ||
       !onMostRecentEvent ||
-      !activeCombatantCandidate.combatant_id ||
+      !combatant_id ||
       combatant_id === activeCombatant.combatant_id
     ) {
       return;
@@ -289,7 +294,7 @@ const EncounterProvider = ({
   }
 
   useEffect(() => {
-    checkForActiveCombatant({
+    setActiveCombatant({
       activeCombatant,
       activeCombatantCandidate,
     });
