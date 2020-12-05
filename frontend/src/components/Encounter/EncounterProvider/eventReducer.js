@@ -1,10 +1,11 @@
 import cloneDeep from 'lodash-es/cloneDeep';
 import sortBy from 'lodash-es/sortBy';
-import concat from 'lodash-es/concat';
 
 const initEvents = {
   events: [],
   currentEventIndex: 0,
+  loading: true,
+  safeToPush: false,
 };
 
 function eventReducer(throughState, action) {
@@ -28,6 +29,16 @@ function eventReducer(throughState, action) {
           payload === undefined || payload === null
             ? events.length - 1
             : payload,
+      };
+    case 'setLoading':
+      return {
+        ...state,
+        loading: !!payload,
+      };
+    case 'setSafeToPush':
+      return {
+        ...state,
+        safeToPush: !!payload,
       };
     default:
       return state;

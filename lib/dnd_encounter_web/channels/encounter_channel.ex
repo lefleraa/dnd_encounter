@@ -51,16 +51,20 @@ defmodule DndEncounterWeb.EncounterChannel do
     },
     socket)
   do
-    EncounterEvents.create_encounter_event(%{
+    event = %{
       type: type,
       payload: payload,
       encounter_id: encounter_id,
-    })
+    };
+    EncounterEvents.create_encounter_event(event)
     encounter = get_events()
     broadcast(
       socket,
       "event",
-      %{ encounter: encounter }
+      %{
+        encounter: encounter,
+        event: event
+      }
     );
     {:noreply, socket}
   end

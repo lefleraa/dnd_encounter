@@ -77,7 +77,7 @@ const EncounterProvider = ({
     eventReducer,
     initEvents
   );
-  const { events = [], currentEventIndex } = eventState;
+  const { events = [], currentEventIndex, safeToPush, loading } = eventState;
 
   const [encounter, dispatchEncounter] = useReducer(
     encounterReducer,
@@ -99,10 +99,15 @@ const EncounterProvider = ({
   // GET ENCOUNTER
   /////////////////////////////////////////////////////////
 
-  const [loading, setLoading] = useState(false);
-
   function fetchEncounter(id) {
-    setLoading(true);
+    dispatchLocalEvents({
+      type: 'setLoading',
+      payload: true,
+    });
+    dispatchLocalEvents({
+      type: 'setSafeToPush',
+      payload: false,
+    });
     const { promise } = getEncounter(id);
     promise
       .then((response) => {
@@ -133,7 +138,16 @@ const EncounterProvider = ({
           });
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        dispatchLocalEvents({
+          type: 'setLoading',
+          payload: false,
+        });
+        dispatchLocalEvents({
+          type: 'setSafeToPush',
+          payload: true,
+        });
+      });
   }
 
   useEffect(() => {
@@ -197,8 +211,6 @@ const EncounterProvider = ({
   // VIA WEBSOCKET CHANNEL
   /////////////////////////////////////////////////////////
 
-  const [safeToPush, setSafeToPush] = useState(false);
-
   useEffect(() => {
     ENCOUNTER_STREAM.CHANNEL = socket.channel(ENCOUNTER_STREAM.NAME, {});
 
@@ -216,7 +228,10 @@ const EncounterProvider = ({
             };
           }),
         });
-        setSafeToPush(true);
+        dispatchLocalEvents({
+          type: 'setSafeToPush',
+          payload: true,
+        });
       },
     });
 
@@ -233,9 +248,15 @@ const EncounterProvider = ({
   /////////////////////////////////////////////////////////
 
   const handleEventPush = ({ event, callback = noop }) => {
+    if (!safeToPush) {
+      return;
+    }
     // optimistic push to prevent a UI flash when rebuilding state
     // from scratch when the channel version arrives
-    setSafeToPush(false);
+    dispatchLocalEvents({
+      type: 'setSafeToPush',
+      payload: false,
+    });
     runEncounterEvent(event);
     // channel broadcast
     const streamedEvent = {
@@ -268,37 +289,33 @@ const EncounterProvider = ({
   };
 
   /////////////////////////////////////////////////////////
-  // ENSURE ACTIVE CANDIDATE
+  // PROPERLY SET ACTIVE CANDIDATE
   /////////////////////////////////////////////////////////
 
-  function setActiveCombatant({
-    activeCombatant = {},
-    activeCombatantCandidate = {},
-  }) {
-    const { combatant_id } = activeCombatantCandidate;
+  function setActiveCombatant() {
+    const { combatant_id } = activeCombatantCandidate || {};
+    const { combatant_id: active_combatant_id } = activeCombatant || {};
 
-    if (
-      !safeToPush ||
-      !round ||
-      !onMostRecentEvent ||
-      !combatant_id ||
-      combatant_id === activeCombatant.combatant_id
-    ) {
+    if (!round || !onMostRecentEvent) {
       return;
     }
 
-    dispatchEvent({
-      type: combatant_turn_start.type,
-      payload: { combatant_id },
-    });
+    const noActiveCandidate = !!(!active_combatant_id && combatant_id);
+    const newCandidateCombatant = !!(
+      combatant_id && combatant_id !== active_combatant_id
+    );
+
+    if (noActiveCandidate || newCandidateCombatant) {
+      dispatchEvent({
+        type: combatant_turn_start.type,
+        payload: { combatant_id },
+      });
+    }
   }
 
   useEffect(() => {
-    setActiveCombatant({
-      activeCombatant,
-      activeCombatantCandidate,
-    });
-  }, [activeCombatant, activeCombatantCandidate, onMostRecentEvent]);
+    setActiveCombatant();
+  }, [round, onMostRecentEvent, activeCombatant, activeCombatantCandidate]);
 
   /////////////////////////////////////////////////////////
   // HYDRATE STATE VIA EVENTS:
@@ -429,6 +446,7 @@ const EncounterProvider = ({
               return historyLog.metaData.round;
             }),
             currentHistoryIndex: eventState.currentEventIndex,
+            safeToPush,
           },
           combatants,
           helpers: {

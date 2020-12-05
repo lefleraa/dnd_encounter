@@ -13,7 +13,11 @@ import {
   faCog,
   faArrowRight,
 } from '@fortawesome/pro-regular-svg-icons';
-import { faHelmetBattle, faDiceD20 } from '@fortawesome/pro-light-svg-icons';
+import {
+  faHelmetBattle,
+  faDiceD20,
+  faCircleNotch,
+} from '@fortawesome/pro-light-svg-icons';
 import combatantTypes from 'data/combatantTypes';
 
 import { mockCharacters } from 'mock';
@@ -211,7 +215,8 @@ const RoundIncrementor = () => {
 const EncounterHeader = () => {
   const encounterContext = useContext(EncounterContext);
   const { encounter = {} } = encounterContext;
-  const { name } = encounter;
+  const { name, history = {} } = encounter;
+  const { safeToPush } = history;
 
   return (
     <Header
@@ -223,6 +228,18 @@ const EncounterHeader = () => {
         },
         after: (
           <>
+            {!safeToPush && (
+              <div className="col-auto pr-0 pl-3">
+                <p className="m-0 small u-color-gray u-nowrap">
+                  <Icon
+                    icon={faCircleNotch}
+                    spin={true}
+                    className="mr-2 u-color-primary"
+                  />
+                  Loading...
+                </p>
+              </div>
+            )}
             <div className="col-auto pr-0 pl-3">
               <OptionMenu />
             </div>
