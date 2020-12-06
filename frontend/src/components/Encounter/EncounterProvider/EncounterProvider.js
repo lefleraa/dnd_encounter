@@ -446,7 +446,6 @@ const EncounterProvider = ({
               return historyLog.metaData.round;
             }),
             currentHistoryIndex: eventState.currentEventIndex,
-            safeToPush,
           },
           combatants,
           helpers: {

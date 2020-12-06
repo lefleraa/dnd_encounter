@@ -215,8 +215,7 @@ const RoundIncrementor = () => {
 const EncounterHeader = () => {
   const encounterContext = useContext(EncounterContext);
   const { encounter = {} } = encounterContext;
-  const { name, history = {} } = encounter;
-  const { safeToPush } = history;
+  const { name } = encounter;
 
   return (
     <Header
@@ -228,18 +227,6 @@ const EncounterHeader = () => {
         },
         after: (
           <>
-            {!safeToPush && (
-              <div className="col-auto pr-0 pl-3">
-                <p className="m-0 small u-color-gray u-nowrap">
-                  <Icon
-                    icon={faCircleNotch}
-                    spin={true}
-                    className="mr-2 u-color-primary"
-                  />
-                  Loading...
-                </p>
-              </div>
-            )}
             <div className="col-auto pr-0 pl-3">
               <OptionMenu />
             </div>
