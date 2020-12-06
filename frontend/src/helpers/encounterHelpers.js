@@ -10,32 +10,50 @@ import combatantTypes from 'data/combatantTypes';
 
 const encounterHelpers = {
   isUnsetCombatant: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
     return combatant.status === combatantStatuses.unset;
   },
   isTurnReadyCombatant: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
     return combatant.status === combatantStatuses.ready;
   },
   isInPlay: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
     return !!(
       combatant.status === combatantStatuses.complete ||
       combatant.status === combatantStatuses.ready
     );
   },
   isOutOfPlay: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
     return !!(
       combatant.status === combatantStatuses.dead ||
       combatant.status === combatantStatuses.unset
     );
   },
   isCompleteCombatant: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
     return combatant.status === combatantStatuses.complete;
   },
   isDeadCombatant: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
     return combatant.status === combatantStatuses.dead;
   },
   isDeathSaving: (combatant) => {
-    if (!combatant) {
-      return false;
+    if (typeof combatant !== 'object') {
+      return;
     }
 
     const { deathSaves } = combatant;
@@ -51,11 +69,11 @@ const encounterHelpers = {
     return isDeathSaving;
   },
 
-  getActiveCombatant: (combatants) => {
+  getActiveCombatant: (combatants = []) => {
     return find(combatants, ['active', true]);
   },
   getCombatantInsights: ({ combatant, character }) => {
-    if (!combatant || !character) {
+    if (typeof combatant !== 'object' || typeof character !== 'object') {
       return {};
     }
     const { damage } = combatant;
@@ -73,14 +91,14 @@ const encounterHelpers = {
       isOverkill: damage > total_health,
     };
   },
-  getCombatantById: ({ combatant_id, combatants }) => {
+  getCombatantById: ({ combatant_id, combatants = [] }) => {
     return find(combatants, ['combatant_id', combatant_id]);
   },
   getCharacterById: ({ combatant_id, character_lookup }) => {
     return character_lookup[combatant_id];
   },
 
-  orderCombatants: (combatants, iteratees) => {
+  orderCombatants: (combatants = [], iteratees) => {
     let clonedCombatants = orderBy(
       cloneDeep(combatants),
       concat(['status'], iteratees)
@@ -106,7 +124,7 @@ const encounterHelpers = {
 
     return encounterHelpers.orderCombatants(result);
   },
-  filterCombatants: (combatants, predicate) => {
+  filterCombatants: (combatants = [], predicate) => {
     return compact(
       combatants.map((combatant) => {
         if (predicate(combatant)) {
