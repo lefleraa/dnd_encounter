@@ -10,7 +10,7 @@ defmodule DndEncounter.EncounterEvents.EncounterEvent do
 
     belongs_to :encounter, DndEncounter.Encounters.Encounter
 
-    timestamps()
+    timestamps([type: :utc_datetime_usec])
   end
 
   @doc false

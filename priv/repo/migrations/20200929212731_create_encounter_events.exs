@@ -8,7 +8,7 @@ defmodule DndEncounter.Repo.Migrations.CreateEncounterEvents do
       add :archive, :boolean, default: false, null: false
       add :encounter_id, references(:encounters)
 
-      timestamps()
+      timestamps([type: :utc_datetime_usec])
     end
 
   end
