@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash-es/cloneDeep';
-import sortBy from 'lodash-es/sortBy';
+import orderBy from 'lodash-es/orderBy';
 
 const initEvents = {
   events: [],
@@ -19,7 +19,7 @@ function eventReducer(throughState, action) {
     case 'setEvents':
       return {
         ...state,
-        events: sortBy(payload || [], ['timestamp']),
+        events: orderBy(payload || [], ['timestamp'], ['asc']),
         currentEventIndex: payload.length - 1,
       };
     case 'setCurrentEvent':
