@@ -1,18 +1,21 @@
-import React, { useReducer, useEffect, createContext, useState } from 'react';
-import socket from 'socket';
+import React, { useReducer, useEffect, createContext } from 'react';
 import find from 'lodash-es/find';
 import noop from 'lodash-es/noop';
 import groupBy from 'lodash-es/groupBy';
 import eventHandlers from './eventHandlers';
-import { encounterHelpers, socketHelper } from 'helpers';
-import { useWindow } from 'hooks';
+import { encounterHelpers } from 'helpers';
+import { useWindow, useChannel } from 'hooks';
 
 import combatantTypes from 'data/combatantTypes';
 import combatantStatuses from 'data/combatantStatuses';
 import useEncounterInsights from './useEncounterInsights';
 
-import { initEvents, eventReducer } from './eventReducer';
-import { initEncounter, encounterReducer } from './encounterReducer';
+import {
+  initEvents,
+  eventReducer,
+  initEncounter,
+  encounterReducer,
+} from 'components/Encounter';
 
 import { mockCharacters } from 'mock';
 import { getEncounter } from 'network';
@@ -47,32 +50,16 @@ function addCharacterLookup({ combatant_id }) {
 }
 
 ////////////////////////////
-// CONTEXT PROVIDER
-////////////////////////////
-
-const EncounterContext = createContext();
-
-////////////////////////////
-// WEBSOCKET CHANNEL
-////////////////////////////
-
-const ENCOUNTER_STREAM = {
-  CHANNEL: undefined,
-  NAME: 'encounter:lobby',
-  PUSH_EVENT: 'event',
-};
-
-////////////////////////////
 // ENCOUNTER PROVIDER
 ////////////////////////////
+
+const EncounterContext = createContext({});
 
 const EncounterProvider = ({
   children,
   encounterId,
   pushConfirmationModal = noop,
 }) => {
-  const { combatant_turn_start, combatant_dead } = eventHandlers;
-
   const [eventState, dispatchLocalEvents] = useReducer(
     eventReducer,
     initEvents
@@ -94,6 +81,8 @@ const EncounterProvider = ({
     activeCombatant,
     activeCombatantCandidate,
   } = insights;
+
+  const { combatant_turn_start, combatant_dead } = eventHandlers;
 
   /////////////////////////////////////////////////////////
   // GET ENCOUNTER
@@ -160,48 +149,26 @@ const EncounterProvider = ({
   // HANDLE WINDOW STATE
   /////////////////////////////////////////////////////////
 
-  const [windowState, setWindowState] = useState();
-  const [activeWindow, setActiveWindow] = useState(false);
-
   useWindow(
     {
       enableListeners: !!encounter.id,
       onMount: () => {
-        setWindowState('mounted');
-        setActiveWindow(true);
         triggerToast({
           icon: faAxeBattle,
           text: 'Battle!',
         });
       },
       onFocus: () => {
-        setWindowState('focus');
-        setActiveWindow(true);
         triggerToast({
           icon: faCheck,
           text: 'Synced.',
         });
       },
-      onBlur: () => {
-        setWindowState('blur');
-        setActiveWindow(true);
-      },
-      onOnline: () => {
-        setWindowState('online');
-        setActiveWindow(true);
-      },
-      onOffline: () => {
-        setWindowState('offline');
-        setActiveWindow(false);
-      },
-      onLoad: () => {
-        setWindowState('loaded');
-        setActiveWindow(true);
-      },
-      onUnload: () => {
-        setWindowState('unloaded');
-        setActiveWindow(false);
-      },
+      onBlur: () => {},
+      onOnline: () => {},
+      onOffline: () => {},
+      onLoad: () => {},
+      onUnload: () => {},
     },
     [encounter.id]
   );
@@ -211,13 +178,19 @@ const EncounterProvider = ({
   // VIA WEBSOCKET CHANNEL
   /////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    ENCOUNTER_STREAM.CHANNEL = socket.channel(ENCOUNTER_STREAM.NAME, {});
+  const CHANNEL = {
+    NAME: 'encounter:lobby',
+    PUSH_EVENT_NAME: 'event',
+  };
 
-    const { join = noop, leave = noop } = socketHelper({
-      channel: ENCOUNTER_STREAM.CHANNEL,
-      event: ENCOUNTER_STREAM.PUSH_EVENT,
-      onPush: ({ encounter = {} }) => {
+  const { channel, socket } = useChannel({
+    channelName: CHANNEL.NAME,
+  });
+
+  useEffect(() => {
+    if (channel) {
+      channel.on(CHANNEL.PUSH_EVENT_NAME, (response) => {
+        const { encounter = {} } = response || {};
         const { encounter_events = [] } = encounter;
         dispatchLocalEvents({
           type: 'setEvents',
@@ -232,16 +205,9 @@ const EncounterProvider = ({
           type: 'setSafeToPush',
           payload: true,
         });
-      },
-    });
-
-    if (activeWindow && encounter.id) {
-      join();
+      });
     }
-    return () => {
-      leave();
-    };
-  }, [windowState, encounter.id]);
+  }, [channel]);
 
   /////////////////////////////////////////////////////////
   // HANDLE PUSH EVENT
@@ -249,6 +215,7 @@ const EncounterProvider = ({
 
   const handleEventPush = ({ event, callback = noop }) => {
     if (!safeToPush) {
+      console.warn("REJECTED EVENT: Reason: 'Busy pushing event'");
       return;
     }
     // optimistic push to prevent a UI flash when rebuilding state
@@ -258,15 +225,13 @@ const EncounterProvider = ({
       payload: false,
     });
     runEncounterEvent(event);
-    // channel broadcast
-    const streamedEvent = {
-      ...event,
-      payload: event.payload || null,
-      encounter_id: encounter.id,
-    };
-    console.log('PUSHED EVENT:');
-    console.log(streamedEvent);
-    ENCOUNTER_STREAM.CHANNEL.push(ENCOUNTER_STREAM.PUSH_EVENT, streamedEvent);
+    if (channel) {
+      channel.push(CHANNEL.PUSH_EVENT_NAME, {
+        ...event,
+        payload: event.payload || null,
+        encounter_id: encounter.id,
+      });
+    }
     callback();
   };
 
@@ -292,30 +257,30 @@ const EncounterProvider = ({
   // PROPERLY SET ACTIVE CANDIDATE
   /////////////////////////////////////////////////////////
 
-  function setActiveCombatant() {
-    const { combatant_id } = activeCombatantCandidate || {};
-    const { combatant_id: active_combatant_id } = activeCombatant || {};
+  // function setActiveCombatant() {
+  //   const { combatant_id } = activeCombatantCandidate || {};
+  //   const { combatant_id: active_combatant_id } = activeCombatant || {};
 
-    if (!round || !onMostRecentEvent) {
-      return;
-    }
+  //   if (!round || !onMostRecentEvent) {
+  //     return;
+  //   }
 
-    const noActiveCandidate = !!(!active_combatant_id && combatant_id);
-    const newCandidateCombatant = !!(
-      combatant_id && combatant_id !== active_combatant_id
-    );
+  //   const noActiveCandidate = !!(!active_combatant_id && combatant_id);
+  //   const newCandidateCombatant = !!(
+  //     combatant_id && combatant_id !== active_combatant_id
+  //   );
 
-    if (noActiveCandidate || newCandidateCombatant) {
-      dispatchEvent({
-        type: combatant_turn_start.type,
-        payload: { combatant_id },
-      });
-    }
-  }
+  //   if (noActiveCandidate || newCandidateCombatant) {
+  //     dispatchEvent({
+  //       type: combatant_turn_start.type,
+  //       payload: { combatant_id },
+  //     });
+  //   }
+  // }
 
-  useEffect(() => {
-    setActiveCombatant();
-  }, [round, onMostRecentEvent, activeCombatant, activeCombatantCandidate]);
+  // useEffect(() => {
+  //   setActiveCombatant();
+  // }, [round, onMostRecentEvent, activeCombatant, activeCombatantCandidate]);
 
   /////////////////////////////////////////////////////////
   // HYDRATE STATE VIA EVENTS:

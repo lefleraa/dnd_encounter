@@ -33,6 +33,9 @@ const App = () => {
                 <Encounters />
               </Route>
               <Route path="/encounter/:id?">
+                <Encounter />
+              </Route>
+              <Route path="/encounterDM/:id?">
                 <EncounterDM />
               </Route>
             </Switch>

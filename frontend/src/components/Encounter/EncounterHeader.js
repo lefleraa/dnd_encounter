@@ -13,11 +13,7 @@ import {
   faCog,
   faArrowRight,
 } from '@fortawesome/pro-regular-svg-icons';
-import {
-  faHelmetBattle,
-  faDiceD20,
-  faCircleNotch,
-} from '@fortawesome/pro-light-svg-icons';
+import { faHelmetBattle, faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 import combatantTypes from 'data/combatantTypes';
 
 import { mockCharacters } from 'mock';

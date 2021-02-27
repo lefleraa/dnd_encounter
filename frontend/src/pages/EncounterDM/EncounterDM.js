@@ -6,6 +6,7 @@ import {
   EncounterHeader,
   EncounterHistoryFeed,
 } from 'components/Encounter';
+import { SocketContextProvider } from 'contexts';
 import PageLayout from '../PageLayout';
 import { useParams } from 'react-router-dom';
 
@@ -13,22 +14,24 @@ const EncounterDM = () => {
   let { id } = useParams();
 
   return (
-    <ConfirmationProvider>
-      {({ actions }) => (
-        <EncounterProvider {...actions} encounterId={id}>
-          <PageLayout
-            components={{
-              header: <EncounterHeader />,
-              content: <CombatantList />,
-              panelRight: {
-                size: 290,
-                component: <EncounterHistoryFeed />,
-              },
-            }}
-          />
-        </EncounterProvider>
-      )}
-    </ConfirmationProvider>
+    <SocketContextProvider>
+      <ConfirmationProvider>
+        {({ actions }) => (
+          <EncounterProvider {...actions} encounterId={id}>
+            <PageLayout
+              components={{
+                header: <EncounterHeader />,
+                content: <CombatantList />,
+                panelRight: {
+                  size: 290,
+                  component: <EncounterHistoryFeed />,
+                },
+              }}
+            />
+          </EncounterProvider>
+        )}
+      </ConfirmationProvider>
+    </SocketContextProvider>
   );
 };
 

@@ -19,7 +19,7 @@ const Encounter = ({ encounter = {}, ACTIONS = {} }) => {
   const { id, name, started } = encounter;
   const { DELETE } = ACTIONS;
 
-  const toPath = `/encounter/${id}`;
+  const toPath = `/encounterDM/${id}`;
 
   return (
     <Card className="p-0 mb-3 d-flex align-items-center">

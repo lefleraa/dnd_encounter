@@ -22,7 +22,7 @@ const HistoryRound = ({ historyRound = [], handleUpdateScroll }) => {
   const { currentHistoryIndex } = history;
   const { setHistoryIndex = noop } = actions;
 
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
 
   const headingLog = historyRound[0];
   const firstLog = historyRound[1];
@@ -73,7 +73,7 @@ const HistoryRound = ({ historyRound = [], handleUpdateScroll }) => {
       />
       <Group
         open={expanded}
-        openByDefault={false}
+        openByDefault={expanded}
         onOpen={handleUpdateScroll}
         onClose={handleUpdateScroll}
         transitionTime={isCurrentRound ? 1 : transitionDur / 2}
@@ -91,7 +91,7 @@ const HistoryRound = ({ historyRound = [], handleUpdateScroll }) => {
                 return (
                   <HistoryLog
                     historyLog={historyLog}
-                    key={historyIndex}
+                    key={historyIndex || i}
                     animate={isCurrentRound}
                     active={historyIndex === currentHistoryIndex}
                     onClick={() => setHistoryIndex(historyIndex)}
@@ -124,7 +124,7 @@ const HistoryRound = ({ historyRound = [], handleUpdateScroll }) => {
 const EncounterHistoryFeed = () => {
   const encounterContext = useContext(EncounterContext);
   const { encounter = {} } = encounterContext;
-  const { history = {}, round } = encounter;
+  const { history = {} } = encounter;
   const { list = [], rounds = {} } = history;
 
   ////////////////////////////////
@@ -186,6 +186,7 @@ const EncounterHistoryFeed = () => {
                     }
                     return (
                       <HistoryRound
+                        key={historyRoundKey || i}
                         historyRound={historyRound}
                         handleUpdateScroll={handleUpdateScroll}
                       />

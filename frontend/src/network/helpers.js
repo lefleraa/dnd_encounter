@@ -27,7 +27,7 @@ function errorHandler({ error, customError }) {
     // triggerToast({ text: customError });
   } else {
     // Something happened in setting up the request that triggered an Error
-    if (error == 'Cancel') {
+    if (error === 'Cancel') {
       console.warn('Cancel', error);
     }
     if (error.message) {
