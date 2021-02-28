@@ -31,11 +31,12 @@ const {
   combatant_dead,
   combatant_turn_end,
   combatant_turn_start,
-  combatant_roll_initiative,
   combatant_damage,
   combatant_heal,
   combatant_move_up,
   combatant_move_down,
+  combatant_roll_initiative,
+  combatant_roll_dice,
 } = eventHandlers;
 
 function encounterReducer(throughState, action) {
@@ -86,8 +87,6 @@ function encounterReducer(throughState, action) {
       return combatant_turn_end._hydrate(passedProps);
     case combatant_turn_start.type:
       return combatant_turn_start._hydrate(passedProps);
-    case combatant_roll_initiative.type:
-      return combatant_roll_initiative._hydrate(passedProps);
     case combatant_move_up.type:
       return combatant_move_up._hydrate(passedProps);
     case combatant_move_down.type:
@@ -96,6 +95,10 @@ function encounterReducer(throughState, action) {
       return combatant_damage._hydrate(passedProps);
     case combatant_heal.type:
       return combatant_heal._hydrate(passedProps);
+    case combatant_roll_initiative.type:
+      return combatant_roll_initiative._hydrate(passedProps);
+    case combatant_roll_dice.type:
+      return combatant_roll_dice._hydrate(passedProps);
     default:
       return state;
   }

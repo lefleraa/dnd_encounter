@@ -12,7 +12,14 @@ import {
   faPlus,
   faTombstone,
 } from '@fortawesome/pro-regular-svg-icons';
-import { faDiceD20 } from '@fortawesome/pro-light-svg-icons';
+import {
+  faDiceD4,
+  faDiceD6,
+  faDiceD8,
+  faDiceD10,
+  faDiceD12,
+  faDiceD20,
+} from '@fortawesome/pro-light-svg-icons';
 import { faHeartBroken, faAxeBattle } from '@fortawesome/pro-solid-svg-icons';
 import { encounterHelpers } from 'helpers';
 import combatantStatuses from 'data/combatantStatuses';
@@ -357,61 +364,6 @@ const eventHandlers = {
     },
   },
 
-  // ROLL COMBATANT INITIATIVE
-  // payload: combatant_id, initiative
-  combatant_roll_initiative: {
-    type: 'combatant_roll_initiative',
-    historyLog: {
-      ...historyLog,
-      after: 'rolled initiative',
-      icon: faDiceD20,
-      iconColor: 'primary',
-    },
-    _hydrate: (params) => {
-      const { state = {}, payload = {} } = params;
-      const { combatants = [] } = state;
-      const { combatant_id, initiative } = payload;
-
-      const combatant = find(combatants, ['combatant_id', combatant_id]) || {};
-
-      remove(combatants, (c) => {
-        return c.combatant_id === combatant_id;
-      });
-      combatant.initiative = initiative;
-      combatant.combatant_index = undefined;
-      combatant.status = combatantStatuses.ready;
-      combatants.push(combatant);
-
-      let endIndex = combatants.length - 1;
-      for (let i = 0; i < combatants.length; i++) {
-        const c = combatants[i];
-        endIndex = i;
-        if (
-          encounterHelpers.isTurnReadyCombatant(c) &&
-          c.initiative > combatant.initiative
-        ) {
-          break;
-        }
-      }
-
-      return pushToHistory({
-        ...params,
-        state: {
-          ...state,
-          combatants: encounterHelpers.reorderCombatants({
-            combatants,
-            startIndex: combatants.length - 1,
-            endIndex,
-          }),
-        },
-        historyLog: {
-          ...eventHandlers.combatant_roll_initiative.historyLog,
-          after: `rolled ${initiative} initiative`,
-        },
-      });
-    },
-  },
-
   // MOVE COMBATANT UP
   // payload: combatant_id, startIndex, endIndex
   combatant_move_up: {
@@ -556,6 +508,110 @@ const eventHandlers = {
         },
         historyLog: {
           ...eventHandlers.combatant_turn_start.historyLog,
+        },
+      });
+    },
+  },
+
+  // ROLL COMBATANT INITIATIVE
+  // payload: combatant_id, initiative
+  combatant_roll_initiative: {
+    type: 'combatant_roll_initiative',
+    historyLog: {
+      ...historyLog,
+      after: 'rolled initiative',
+      icon: faDiceD20,
+      iconColor: 'primary',
+    },
+    _hydrate: (params) => {
+      const { state = {}, payload = {} } = params;
+      const { combatants = [] } = state;
+      const { combatant_id, initiative } = payload;
+
+      const combatant = find(combatants, ['combatant_id', combatant_id]) || {};
+
+      remove(combatants, (c) => {
+        return c.combatant_id === combatant_id;
+      });
+      combatant.initiative = initiative;
+      combatant.combatant_index = undefined;
+      combatant.status = combatantStatuses.ready;
+      combatants.push(combatant);
+
+      let endIndex = combatants.length - 1;
+      for (let i = 0; i < combatants.length; i++) {
+        const c = combatants[i];
+        endIndex = i;
+        if (
+          encounterHelpers.isTurnReadyCombatant(c) &&
+          c.initiative > combatant.initiative
+        ) {
+          break;
+        }
+      }
+
+      return pushToHistory({
+        ...params,
+        state: {
+          ...state,
+          combatants: encounterHelpers.reorderCombatants({
+            combatants,
+            startIndex: combatants.length - 1,
+            endIndex,
+          }),
+        },
+        historyLog: {
+          ...eventHandlers.combatant_roll_initiative.historyLog,
+          after: `rolled ${initiative} initiative`,
+        },
+      });
+    },
+  },
+
+  // ROLL DICE
+  // payload: combatant_id, dice roll
+  combatant_roll_dice: {
+    type: 'combatant_roll_dice',
+    historyLog: {
+      ...historyLog,
+      after: 'rolled dice',
+      iconColor: 'white',
+    },
+    _hydrate: (params) => {
+      const { payload = {} } = params;
+      const { dice, roll } = payload;
+
+      let icon;
+
+      switch (dice) {
+        case 'd4':
+          icon = faDiceD4;
+          break;
+        case 'd6':
+          icon = faDiceD6;
+          break;
+        case 'd8':
+          icon = faDiceD8;
+          break;
+        case 'd10':
+          icon = faDiceD10;
+          break;
+        case 'd12':
+          icon = faDiceD12;
+          break;
+        case 'd20':
+          icon = faDiceD20;
+          break;
+        default:
+          icon = faDiceD20;
+      }
+
+      return pushToHistory({
+        ...params,
+        historyLog: {
+          ...eventHandlers.combatant_roll_dice.historyLog,
+          icon,
+          after: `rolled ${dice} for ${roll}`,
         },
       });
     },

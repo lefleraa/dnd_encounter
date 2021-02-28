@@ -3,7 +3,7 @@ import find from 'lodash-es/find';
 import noop from 'lodash-es/noop';
 import groupBy from 'lodash-es/groupBy';
 import eventHandlers from './eventHandlers';
-import { encounterHelpers } from 'helpers';
+import { encounterHelpers, rollD } from 'helpers';
 import { useWindow, useChannel } from 'hooks';
 
 import combatantTypes from 'data/combatantTypes';
@@ -82,7 +82,11 @@ const EncounterProvider = ({
     activeCombatantCandidate,
   } = insights;
 
-  const { combatant_turn_start, combatant_dead } = eventHandlers;
+  const {
+    combatant_turn_start,
+    combatant_dead,
+    combatant_roll_dice,
+  } = eventHandlers;
 
   /////////////////////////////////////////////////////////
   // GET ENCOUNTER
@@ -368,6 +372,21 @@ const EncounterProvider = ({
                 },
               }),
           });
+        },
+      });
+    },
+
+    rollDice: ({ combatant_id, dice = 'd20' }) => {
+      const roll = rollD(dice);
+      if (!roll) {
+        return;
+      }
+      dispatchEvent({
+        type: combatant_roll_dice.type,
+        payload: {
+          combatant_id,
+          dice,
+          roll: roll.total,
         },
       });
     },

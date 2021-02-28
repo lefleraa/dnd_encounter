@@ -11,6 +11,7 @@ import CombatantHealth from './CombatantHealth';
 import CombatantDeathSaves from './CombatantDeathSaves';
 import CombatantInitiative from './CombatantInitiative';
 import CombatantOptions from './CombatantOptions';
+import DiceOptions from './DiceOptions';
 import InitiativeModal from './InitiativeModal';
 import HealthModal from './HealthModal';
 
@@ -204,6 +205,9 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
         </div>
         <div className="col-auto p-0 pl-2">
           <CombatantOptions {...passedProps} />
+        </div>
+        <div className="col-auto p-0 pl-2">
+          <DiceOptions {...passedProps} />
         </div>
       </div>
       <InitiativeModal
