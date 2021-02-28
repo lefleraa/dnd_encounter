@@ -3,14 +3,7 @@ import noop from 'lodash-es/noop';
 import Icon from 'atoms/Icon';
 import Dropdown from 'atoms/Dropdown';
 import { CombatantBtn } from './fragments';
-import {
-  faDiceD4,
-  faDiceD6,
-  faDiceD8,
-  faDiceD10,
-  faDiceD12,
-  faDiceD20,
-} from '@fortawesome/pro-light-svg-icons';
+import { diceTypes } from 'data';
 
 /////////////////////////////
 // OPTION MENU
@@ -24,38 +17,74 @@ const DiceOptions = ({ combatant = {}, actions = {} }) => {
     <Dropdown
       placement="BOTTOM_RIGHT"
       components={{
-        trigger: <CombatantBtn icon={faDiceD20} />,
+        trigger: <CombatantBtn icon={diceTypes.d20.icon} />,
       }}
       menuItems={[
         {
-          text: `D4`,
-          before: <Icon icon={faDiceD4} className="u-color-white" fw={true} />,
-          action: () => rollDice({ combatant_id, dice: 'd4' }),
+          text: diceTypes.d4.name,
+          before: (
+            <Icon
+              icon={diceTypes.d4.icon}
+              className="u-color-white"
+              fw={true}
+            />
+          ),
+          action: () => rollDice({ combatant_id, dice: diceTypes.d4.code }),
         },
         {
-          text: `D6`,
-          before: <Icon icon={faDiceD6} className="u-color-white" fw={true} />,
-          action: () => rollDice({ combatant_id, dice: 'd6' }),
+          text: diceTypes.d6.name,
+          before: (
+            <Icon
+              icon={diceTypes.d6.icon}
+              className="u-color-white"
+              fw={true}
+            />
+          ),
+          action: () => rollDice({ combatant_id, dice: diceTypes.d6.code }),
         },
         {
-          text: `D8`,
-          before: <Icon icon={faDiceD8} className="u-color-white" fw={true} />,
-          action: () => rollDice({ combatant_id, dice: 'd8' }),
+          text: diceTypes.d8.name,
+          before: (
+            <Icon
+              icon={diceTypes.d8.icon}
+              className="u-color-white"
+              fw={true}
+            />
+          ),
+          action: () => rollDice({ combatant_id, dice: diceTypes.d8.code }),
         },
         {
-          text: `D10`,
-          before: <Icon icon={faDiceD10} className="u-color-white" fw={true} />,
-          action: () => rollDice({ combatant_id, dice: 'd10' }),
+          text: diceTypes.d10.name,
+          before: (
+            <Icon
+              icon={diceTypes.d10.icon}
+              className="u-color-white"
+              fw={true}
+            />
+          ),
+          action: () => rollDice({ combatant_id, dice: diceTypes.d10.code }),
         },
         {
-          text: `D12`,
-          before: <Icon icon={faDiceD12} className="u-color-white" fw={true} />,
-          action: () => rollDice({ combatant_id, dice: 'd12' }),
+          text: diceTypes.d12.name,
+          before: (
+            <Icon
+              icon={diceTypes.d12.icon}
+              className="u-color-white"
+              fw={true}
+            />
+          ),
+          action: () => rollDice({ combatant_id, dice: diceTypes.d12.code }),
         },
         {
-          text: `D20`,
-          before: <Icon icon={faDiceD20} className="u-color-white" fw={true} />,
-          action: () => rollDice({ combatant_id, dice: 'd20' }),
+          text: diceTypes.d20.name,
+          before: (
+            <Icon
+              icon={diceTypes.d20.icon}
+              className="u-color-white"
+              fw={true}
+            />
+          ),
+          action: () => rollDice({ combatant_id, dice: diceTypes.d20.code }),
         },
       ]}
     />

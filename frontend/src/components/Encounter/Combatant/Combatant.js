@@ -204,10 +204,10 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
           )}
         </div>
         <div className="col-auto p-0 pl-2">
-          <CombatantOptions {...passedProps} />
+          <DiceOptions {...passedProps} />
         </div>
         <div className="col-auto p-0 pl-2">
-          <DiceOptions {...passedProps} />
+          <CombatantOptions {...passedProps} />
         </div>
       </div>
       <InitiativeModal

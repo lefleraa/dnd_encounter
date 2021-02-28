@@ -12,17 +12,10 @@ import {
   faPlus,
   faTombstone,
 } from '@fortawesome/pro-regular-svg-icons';
-import {
-  faDiceD4,
-  faDiceD6,
-  faDiceD8,
-  faDiceD10,
-  faDiceD12,
-  faDiceD20,
-} from '@fortawesome/pro-light-svg-icons';
+import { faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 import { faHeartBroken, faAxeBattle } from '@fortawesome/pro-solid-svg-icons';
 import { encounterHelpers } from 'helpers';
-import combatantStatuses from 'data/combatantStatuses';
+import { combatantStatuses, diceTypes } from 'data';
 
 const historyLog = {
   msg: undefined,
@@ -584,26 +577,26 @@ const eventHandlers = {
       let icon;
 
       switch (dice) {
-        case 'd4':
-          icon = faDiceD4;
+        case diceTypes.d4.code:
+          icon = diceTypes.d4.icon;
           break;
-        case 'd6':
-          icon = faDiceD6;
+        case diceTypes.d6.code:
+          icon = diceTypes.d6.icon;
           break;
-        case 'd8':
-          icon = faDiceD8;
+        case diceTypes.d8.code:
+          icon = diceTypes.d8.icon;
           break;
-        case 'd10':
-          icon = faDiceD10;
+        case diceTypes.d10.code:
+          icon = diceTypes.d10.icon;
           break;
-        case 'd12':
-          icon = faDiceD12;
+        case diceTypes.d12.code:
+          icon = diceTypes.d12.icon;
           break;
-        case 'd20':
-          icon = faDiceD20;
+        case diceTypes.d20.code:
+          icon = diceTypes.d20.icon;
           break;
         default:
-          icon = faDiceD20;
+          icon = diceTypes.d20.icon;
       }
 
       return pushToHistory({
