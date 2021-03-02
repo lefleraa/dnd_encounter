@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Icon from 'atoms/Icon';
-import BtnWrap from 'atoms/BtnWrap';
+import { Icon, BtnWrap } from 'atoms';
 
 /////////////////////////////
 // FRAGMENTS

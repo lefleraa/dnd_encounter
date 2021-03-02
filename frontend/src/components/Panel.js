@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Col } from 'react-bootstrap';
-import Scrollbars from 'components/Scrollbars';
+import { Scrollbars } from 'components';
 
 const propTypes = {
   direction: PropTypes.oneOf(['column', 'row', null]),

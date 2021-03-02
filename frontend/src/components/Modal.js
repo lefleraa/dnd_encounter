@@ -1,9 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import BsModal from 'react-bootstrap/Modal';
-import DetailHeading from 'atoms/DetailHeading';
-import BtnWrap from 'atoms/BtnWrap';
-import Icon from 'atoms/Icon';
+import { DetailHeading, BtnWrap, Icon } from 'atoms';
 import { faTimes } from '@fortawesome/pro-light-svg-icons';
 
 const Modal = ({

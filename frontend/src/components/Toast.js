@@ -1,8 +1,7 @@
 import React from 'react';
-import Icon from 'atoms/Icon';
 import noop from 'lodash-es/noop';
 import toast from 'toasted-notes';
-import BtnWrap from 'atoms/BtnWrap';
+import { Icon, BtnWrap } from 'atoms';
 import { faTimes } from '@fortawesome/pro-regular-svg-icons';
 
 const Toast = ({ text, icon, variant = 'primary', onClose = noop }) => {

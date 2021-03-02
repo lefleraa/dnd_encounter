@@ -1,10 +1,6 @@
 import React, { useState, useContext } from 'react';
 import classNames from 'classnames';
-import BtnWrap from 'atoms/BtnWrap';
-import DetailHeading from 'atoms/DetailHeading';
-import Icon from 'atoms/Icon';
-import IconSquare from 'atoms/IconSquare';
-import Avatar from 'atoms/Avatar';
+import { BtnWrap, DetailHeading, Icon, IconSquare, Avatar } from 'atoms';
 import { EncounterContext } from '../EncounterProvider';
 import {
   faHistory,

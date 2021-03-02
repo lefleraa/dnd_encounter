@@ -1,11 +1,8 @@
 import React, { useContext } from 'react';
 import keys from 'lodash-es/keys';
 import noop from 'lodash-es/noop';
-import IconBtn from 'atoms/IconBtn';
-import Header from 'components/Header';
-import Dropdown from 'atoms/Dropdown';
-import Btn from 'atoms/Btn';
-import Icon from 'atoms/Icon';
+import { Header } from 'components';
+import { Dropdown, Btn, Icon, IconBtn } from 'atoms';
 import { EncounterContext } from './EncounterProvider';
 import {
   faPlus,
@@ -14,7 +11,7 @@ import {
   faArrowRight,
 } from '@fortawesome/pro-regular-svg-icons';
 import { faHelmetBattle, faDiceD20 } from '@fortawesome/pro-light-svg-icons';
-import combatantTypes from 'data/combatantTypes';
+import { combatantTypes } from 'data';
 
 import { mockCharacters } from 'mock';
 

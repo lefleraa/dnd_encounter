@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import noop from 'lodash-es/noop';
-import Icon from 'atoms/Icon';
-import BtnWrap from 'atoms/BtnWrap';
+import { Icon, BtnWrap } from 'atoms';
 import { faArrowRight, faCheck } from '@fortawesome/pro-regular-svg-icons';
 import { faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 

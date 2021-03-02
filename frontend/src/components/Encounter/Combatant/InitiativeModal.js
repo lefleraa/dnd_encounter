@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import noop from 'lodash-es/noop';
-import Icon from 'atoms/Icon';
+import { Icon, Btn } from 'atoms';
+import { Modal } from 'components';
 import { faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 import { faCheck } from '@fortawesome/pro-regular-svg-icons';
-import Btn from 'atoms/Btn';
-import Modal from 'components/Modal';
 import FormControl from 'react-bootstrap/FormControl';
 
 const InitiativeInput = ({
@@ -76,7 +75,7 @@ const InitiativeModal = ({ show, onHide, character = {}, onSubmit = noop }) => {
             icon={faDiceD20}
             iconColor="primary"
             preTitle={name}
-            title="Roll Inititaive"
+            title="Roll Initiative"
           />
         </Modal.Header>
         <Modal.Body>

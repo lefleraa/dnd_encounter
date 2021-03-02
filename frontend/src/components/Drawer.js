@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import classNames from 'classnames';
 import cleanprops from 'clean-react-props';
-import Icon from 'atoms/Icon';
-import BtnWrap from 'atoms/BtnWrap';
-import trapFocus from 'helpers/trapFocus';
+import { Icon, BtnWrap } from 'atoms';
+import { trapFocus } from 'helpers';
 import { faTimes } from '@fortawesome/pro-light-svg-icons';
 
 const defaultProps = {

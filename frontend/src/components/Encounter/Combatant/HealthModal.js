@@ -7,10 +7,8 @@ import React, {
 } from 'react';
 import noop from 'lodash-es/noop';
 import { faCheck } from '@fortawesome/pro-regular-svg-icons';
-import Icon from 'atoms/Icon';
-import SlideTabs from 'components/SlideTabs';
-import Btn from 'atoms/Btn';
-import Modal from 'components/Modal';
+import { Icon, Btn } from 'atoms';
+import { SlideTabs, Modal } from 'components';
 import FormControl from 'react-bootstrap/FormControl';
 import { faHeart } from '@fortawesome/pro-duotone-svg-icons';
 import { useHealthGate } from 'hooks';

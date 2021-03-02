@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
 import classNames from 'classnames';
 import noop from 'lodash-es/noop';
-import Icon from 'atoms/Icon';
-import Avatar from 'atoms/Avatar';
-
+import { Icon, Avatar } from 'atoms';
 import { combatantTypes } from 'data';
 import { EncounterContext } from '../EncounterProvider';
 

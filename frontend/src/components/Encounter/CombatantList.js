@@ -1,9 +1,7 @@
 import React, { useContext, useState } from 'react';
 import noop from 'lodash-es/noop';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import Drawer from 'components/Drawer';
-import Card from 'components/Card';
-import InterfaceState from 'components/InterfaceState';
+import { Drawer, Card, InterfaceState } from 'components';
 import { EncounterContext } from './EncounterProvider';
 import { Combatant } from './Combatant';
 import { faUsersCrown } from '@fortawesome/pro-light-svg-icons';

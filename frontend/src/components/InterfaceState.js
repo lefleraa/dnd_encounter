@@ -1,9 +1,8 @@
 import React from 'react';
 import noop from 'lodash-es/noop';
-import Card from 'components/Card';
-import Btn from 'atoms/Btn';
-import Icon from 'atoms/Icon';
-import PageLayout from 'pages/PageLayout';
+import { Card } from 'components';
+import { Icon, Btn } from 'atoms';
+import { PageLayout } from 'layout';
 import { faCircleNotch, faPlus } from '@fortawesome/pro-regular-svg-icons';
 
 const InterfaceState = ({

@@ -1,7 +1,6 @@
 import React from 'react';
 import noop from 'lodash-es/noop';
-import Icon from 'atoms/Icon';
-import Dropdown from 'atoms/Dropdown';
+import { Icon, Dropdown } from 'atoms';
 import { CombatantBtn } from './fragments';
 import { faEllipsisH } from '@fortawesome/pro-regular-svg-icons';
 

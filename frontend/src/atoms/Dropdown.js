@@ -2,8 +2,7 @@ import React, { forwardRef, useEffect, useRef, useCallback } from 'react';
 import cleanProps from 'clean-react-props';
 import classNames from 'classnames';
 import { ToggleLayer, anchor } from 'react-laag';
-import BtnWrap from 'atoms/BtnWrap';
-import Btn from 'atoms/Btn';
+import { Btn, BtnWrap } from 'atoms';
 import { trapFocus } from 'helpers';
 
 const Trigger = forwardRef(

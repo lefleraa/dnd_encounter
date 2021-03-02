@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
-import BtnWrap from 'atoms/BtnWrap';
+import { BtnWrap } from 'atoms';
 
 const SlideTabsIndicator = ({ activeOption = {} }) => {
   const indicatorRef = useRef();

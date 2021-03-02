@@ -1,8 +1,6 @@
 import React from 'react';
-import Container from 'components/Container';
-import Icon from 'atoms/Icon';
-import DetailHeading from 'atoms/DetailHeading';
-import BtnWrap from 'atoms/BtnWrap';
+import { Container } from 'components';
+import { Icon, BtnWrap, DetailHeading } from 'atoms';
 import { faAngleLeft } from '@fortawesome/pro-regular-svg-icons';
 
 ////////////////////////

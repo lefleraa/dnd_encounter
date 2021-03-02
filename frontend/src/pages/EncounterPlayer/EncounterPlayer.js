@@ -10,11 +10,11 @@ import { SocketContextProvider } from 'contexts';
 import { PageLayout, SiteWrapper } from 'layout';
 import { useParams } from 'react-router-dom';
 
-const EncounterDM = () => {
+const EncounterPlayer = () => {
   let { id } = useParams();
 
   return (
-    <SiteWrapper>
+    <SiteWrapper hasAccount={false}>
       <SocketContextProvider>
         <ConfirmationProvider>
           {({ actions }) => (
@@ -37,4 +37,4 @@ const EncounterDM = () => {
   );
 };
 
-export default EncounterDM;
+export default EncounterPlayer;

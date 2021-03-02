@@ -1,14 +1,16 @@
 import React from 'react';
 import Header from 'components/Header';
-import PageLayout from '../PageLayout';
+import { PageLayout, SiteWrapper } from 'layout';
 
 const Home = () => {
   return (
-    <PageLayout
-      components={{
-        header: <Header heading="Home" />,
-      }}
-    />
+    <SiteWrapper>
+      <PageLayout
+        components={{
+          header: <Header heading="Home" />,
+        }}
+      />
+    </SiteWrapper>
   );
 };
 

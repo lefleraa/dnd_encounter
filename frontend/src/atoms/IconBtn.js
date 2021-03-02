@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import BtnWrap from 'atoms/BtnWrap';
-import IconSquare from 'atoms/IconSquare';
+import { BtnWrap, IconSquare } from 'atoms';
 
 const IconBtn = ({ icon, size, className, children, ...rest }) => {
   return (

@@ -3,8 +3,8 @@ import noop from 'lodash-es/noop';
 import remove from 'lodash-es/remove';
 import concat from 'lodash-es/concat';
 import cloneDeep from 'lodash-es/cloneDeep';
-import Modal from 'components/Modal';
-import Btn from 'atoms/Btn';
+import { Modal } from 'components';
+import { Btn } from 'atoms';
 import { v4 as uuidv4 } from 'uuid';
 
 const ConfirmModal = ({

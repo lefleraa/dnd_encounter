@@ -6,7 +6,7 @@ import Btn from 'atoms/Btn';
 import BtnWrap from 'atoms/BtnWrap';
 import Icon from 'atoms/Icon';
 import IconSquare from 'atoms/IconSquare';
-import PageLayout from '../PageLayout';
+import { PageLayout, SiteWrapper } from 'layout';
 import { getEncounters, createEncounter, deleteEncounter } from 'network';
 import {
   faMountains,
@@ -100,49 +100,51 @@ const Encounters = () => {
   }, []);
 
   return (
-    <PageLayout
-      components={{
-        header: (
-          <Header
-            heading="Encounters"
-            components={{
-              after: !!(encounters && encounters.length) ? (
-                <Btn
-                  variant="primary"
-                  onClick={ACTIONS.CREATE}
-                  className="animate__animated animate__fadeIn"
-                >
-                  <Icon icon={faPlus} className="mr-2" />
-                  ADD ENCOUNTER
-                </Btn>
-              ) : null,
-            }}
-          />
-        ),
-        content: (
-          <>
-            {!!(encounters && encounters.length) ? (
-              encounters.map((encounter) => {
-                return (
-                  <Encounter
-                    key={encounter.encounter_id}
-                    encounter={encounter}
-                    ACTIONS={ACTIONS}
-                  />
-                );
-              })
-            ) : (
-              <InterfaceState
-                icon={faAxeBattle}
-                text="No Encounters"
-                btnText="ADD ENCOUNTER"
-                btnAction={ACTIONS.CREATE}
-              />
-            )}
-          </>
-        ),
-      }}
-    />
+    <SiteWrapper>
+      <PageLayout
+        components={{
+          header: (
+            <Header
+              heading="Encounters"
+              components={{
+                after: !!(encounters && encounters.length) ? (
+                  <Btn
+                    variant="primary"
+                    onClick={ACTIONS.CREATE}
+                    className="animate__animated animate__fadeIn"
+                  >
+                    <Icon icon={faPlus} className="mr-2" />
+                    ADD ENCOUNTER
+                  </Btn>
+                ) : null,
+              }}
+            />
+          ),
+          content: (
+            <>
+              {!!(encounters && encounters.length) ? (
+                encounters.map((encounter) => {
+                  return (
+                    <Encounter
+                      key={encounter.encounter_id}
+                      encounter={encounter}
+                      ACTIONS={ACTIONS}
+                    />
+                  );
+                })
+              ) : (
+                <InterfaceState
+                  icon={faAxeBattle}
+                  text="No Encounters"
+                  btnText="ADD ENCOUNTER"
+                  btnAction={ACTIONS.CREATE}
+                />
+              )}
+            </>
+          ),
+        }}
+      />
+    </SiteWrapper>
   );
 };
 
