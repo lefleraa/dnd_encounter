@@ -29,7 +29,7 @@ const {
   combatant_remove,
   combatant_fled,
   combatant_dead,
-  combatant_turn_end,
+  // combatant_turn_end,
   combatant_turn_start,
   combatant_damage,
   combatant_heal,
@@ -83,8 +83,8 @@ function encounterReducer(throughState, action) {
       return combatant_fled._hydrate(passedProps);
     case combatant_dead.type:
       return combatant_dead._hydrate(passedProps);
-    case combatant_turn_end.type:
-      return combatant_turn_end._hydrate(passedProps);
+    // case combatant_turn_end.type:
+    //   return combatant_turn_end._hydrate(passedProps);
     case combatant_turn_start.type:
       return combatant_turn_start._hydrate(passedProps);
     case combatant_move_up.type:

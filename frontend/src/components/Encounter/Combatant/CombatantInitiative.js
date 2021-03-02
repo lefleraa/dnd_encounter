@@ -19,11 +19,7 @@ const CombatantInitiative = ({
 }) => {
   const { combatant_id, initiative } = combatant;
   const { encounterStarted } = insights;
-  const {
-    combatant_turn_start,
-    combatant_turn_end,
-    combatant_dead,
-  } = eventHandlers;
+  const { combatant_turn_start, combatant_dead } = eventHandlers;
   const { setEditingInitiative = noop } = localActions;
   const [hover, setHover] = useState(false);
 
@@ -47,11 +43,9 @@ const CombatantInitiative = ({
         if (isUnset || !encounterStarted) {
           setEditingInitiative(true);
         } else {
-          if (!isDead) {
+          if (!isDead && !isActive) {
             dispatchEvent({
-              type: isActive
-                ? combatant_turn_end.type
-                : combatant_turn_start.type,
+              type: combatant_turn_start.type,
               payload: { combatant_id },
             });
           }
@@ -69,12 +63,10 @@ const CombatantInitiative = ({
         <div className="content d-flex align-items-center justify-content-center u-color-white">
           {isDead ? (
             <Icon icon={combatant_dead.historyLog.icon} />
-          ) : !!hover ? (
+          ) : !!hover && !isActive ? (
             <>
               {!!(isUnset || !encounterStarted) ? (
                 <RollIcon />
-              ) : isActive ? (
-                <Icon icon={faCheck} />
               ) : (
                 <Icon icon={faArrowRight} />
               )}

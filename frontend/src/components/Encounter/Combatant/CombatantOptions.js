@@ -22,7 +22,6 @@ const CombatantOptions = ({
     combatant_remove,
     combatant_dead,
     combatant_turn_start,
-    combatant_turn_end,
     combatant_roll_initiative,
   } = eventHandlers;
 
@@ -55,35 +54,6 @@ const CombatantOptions = ({
             }),
         },
         {
-          hidden: !initiative,
-          disabled: !!(isDead || isComplete),
-          text: !!isComplete ? `Reinstate Turn` : `End Turn`,
-          before: (
-            <Icon
-              icon={
-                !!isComplete
-                  ? combatant_turn_start.historyLog.icon
-                  : combatant_turn_end.historyLog.icon
-              }
-              className={`u-color-${
-                !!isComplete
-                  ? combatant_turn_start.historyLog.iconColor
-                  : combatant_turn_end.historyLog.iconColor
-              }`}
-              fw={true}
-            />
-          ),
-          action: () =>
-            dispatchEvent({
-              type: !!isComplete
-                ? combatant_turn_start.type
-                : combatant_turn_end.type,
-              payload: {
-                combatant_id,
-              },
-            }),
-        },
-        {
           disabled: !!(isDead || isComplete),
           text: !!initiative ? `Re-Roll Initiative` : `Roll Initiative`,
           before: (
@@ -94,24 +64,6 @@ const CombatantOptions = ({
             />
           ),
           action: () => setEditingInitiative(true),
-        },
-        {
-          disabled: !!isDead,
-          text: `Dead`,
-          before: (
-            <Icon
-              icon={combatant_dead.historyLog.icon}
-              className={`u-color-${combatant_dead.historyLog.iconColor}`}
-              fw={true}
-            />
-          ),
-          action: () =>
-            dispatchEvent({
-              type: combatant_dead.type,
-              payload: {
-                combatant_id,
-              },
-            }),
         },
         {
           hidden: !initiative,
@@ -127,6 +79,24 @@ const CombatantOptions = ({
           action: () =>
             dispatchEvent({
               type: combatant_fled.type,
+              payload: {
+                combatant_id,
+              },
+            }),
+        },
+        {
+          disabled: !!isDead,
+          text: `Dead`,
+          before: (
+            <Icon
+              icon={combatant_dead.historyLog.icon}
+              className={`u-color-${combatant_dead.historyLog.iconColor}`}
+              fw={true}
+            />
+          ),
+          action: () =>
+            dispatchEvent({
+              type: combatant_dead.type,
               payload: {
                 combatant_id,
               },

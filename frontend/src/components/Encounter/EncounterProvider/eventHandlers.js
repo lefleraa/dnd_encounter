@@ -424,44 +424,44 @@ const eventHandlers = {
 
   // END COMBATANT TURN
   // payload: combatant_id
-  combatant_turn_end: {
-    type: 'combatant_turn_end',
-    historyLog: {
-      ...historyLog,
-      before: 'Ended turn for',
-      icon: faCheck,
-      iconColor: 'confirm',
-      disabled: true,
-    },
-    _hydrate: (params) => {
-      const { state = {}, payload = {} } = params;
-      const { combatants = [] } = state;
-      const { combatant_id } = payload;
+  // combatant_turn_end: {
+  //   type: 'combatant_turn_end',
+  //   historyLog: {
+  //     ...historyLog,
+  //     before: 'Ended turn for',
+  //     icon: faCheck,
+  //     iconColor: 'confirm',
+  //     disabled: true,
+  //   },
+  //   _hydrate: (params) => {
+  //     const { state = {}, payload = {} } = params;
+  //     const { combatants = [] } = state;
+  //     const { combatant_id } = payload;
 
-      const combatant = find(combatants, ['combatant_id', combatant_id]) || {};
+  //     const combatant = find(combatants, ['combatant_id', combatant_id]) || {};
 
-      combatants.forEach((c) => {
-        c.active = false;
-        if (encounterHelpers.isInPlay(c)) {
-          c.status =
-            c.combatant_index <= combatant.combatant_index
-              ? combatantStatuses.complete
-              : combatantStatuses.ready;
-        }
-      });
+  //     combatants.forEach((c) => {
+  //       c.active = false;
+  //       if (encounterHelpers.isInPlay(c)) {
+  //         c.status =
+  //           c.combatant_index <= combatant.combatant_index
+  //             ? combatantStatuses.complete
+  //             : combatantStatuses.ready;
+  //       }
+  //     });
 
-      return pushToHistory({
-        ...params,
-        state: {
-          ...state,
-          combatants,
-        },
-        historyLog: {
-          ...eventHandlers.combatant_turn_end.historyLog,
-        },
-      });
-    },
-  },
+  //     return pushToHistory({
+  //       ...params,
+  //       state: {
+  //         ...state,
+  //         combatants,
+  //       },
+  //       historyLog: {
+  //         ...eventHandlers.combatant_turn_end.historyLog,
+  //       },
+  //     });
+  //   },
+  // },
 
   // START COMBATANT TURN
   // payload: combatant_id
