@@ -12,7 +12,6 @@ import {
   faPlus,
   faTombstone,
 } from '@fortawesome/pro-regular-svg-icons';
-import { faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 import { faHeartBroken, faAxeBattle } from '@fortawesome/pro-solid-svg-icons';
 import { encounterHelpers } from 'helpers';
 import { combatantStatuses, diceTypes } from 'data';
@@ -513,7 +512,7 @@ const eventHandlers = {
     historyLog: {
       ...historyLog,
       after: 'rolled initiative',
-      icon: faDiceD20,
+      icon: diceTypes.d20.icon,
       iconColor: 'primary',
     },
     _hydrate: (params) => {
@@ -574,36 +573,11 @@ const eventHandlers = {
       const { payload = {} } = params;
       const { dice, roll } = payload;
 
-      let icon;
-
-      switch (dice) {
-        case diceTypes.d4.code:
-          icon = diceTypes.d4.icon;
-          break;
-        case diceTypes.d6.code:
-          icon = diceTypes.d6.icon;
-          break;
-        case diceTypes.d8.code:
-          icon = diceTypes.d8.icon;
-          break;
-        case diceTypes.d10.code:
-          icon = diceTypes.d10.icon;
-          break;
-        case diceTypes.d12.code:
-          icon = diceTypes.d12.icon;
-          break;
-        case diceTypes.d20.code:
-          icon = diceTypes.d20.icon;
-          break;
-        default:
-          icon = diceTypes.d20.icon;
-      }
-
       return pushToHistory({
         ...params,
         historyLog: {
           ...eventHandlers.combatant_roll_dice.historyLog,
-          icon,
+          icon: !!diceTypes[dice] && diceTypes[dice].icon,
           after: `rolled ${dice} for ${roll}`,
         },
       });

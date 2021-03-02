@@ -26,6 +26,7 @@
   margin-left: -0.75rem;
   margin-right: -0.75rem;
 }
+
 .HistoryLog {
   width: 100%;
   display: flex;
@@ -33,11 +34,9 @@
   padding: 0.5rem 0.75rem !important;
   min-height: 50px;
   .mixin-rounded(@global-border-radius);
-  .mixin-transition(all @global-transition-dur @global-transition-easing);
   .HistoryLog__Icon,
   .HistoryLog__Text {
     .mixin-opacity(1);
-    .mixin-transition(opacity @global-transition-dur @global-transition-easing);
   }
   .HistoryLog__Icon {
     padding-right: 0.75rem;

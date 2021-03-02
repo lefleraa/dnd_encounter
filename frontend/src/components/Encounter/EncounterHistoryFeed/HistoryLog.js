@@ -12,8 +12,6 @@ import {
   faMinus,
 } from '@fortawesome/pro-regular-svg-icons';
 
-let animateClasses = 'animate__animated animate__fadeInUp animate__faster';
-
 const HistoryLogDivider = ({ className, ...rest }) => {
   return (
     <div
@@ -34,7 +32,6 @@ const HistoryLogDivider = ({ className, ...rest }) => {
 const HistoryLog = ({
   historyLog = {},
   active,
-  animate = false,
   components = {},
   style,
   onClick,
@@ -78,7 +75,6 @@ const HistoryLog = ({
         block
         className={classNames(
           'HistoryLog mb-1',
-          !!animate && animateClasses,
           !!(hover && !disabled) && 'HistoryLog__hover',
           !!(active && !disabled) && 'HistoryLog__active',
           !!(bypass && !active) && 'HistoryLog__faded'
@@ -160,5 +156,5 @@ const HistoryLog = ({
   );
 };
 
-export { HistoryLogDivider, animateClasses };
+export { HistoryLogDivider };
 export default HistoryLog;

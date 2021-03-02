@@ -1,7 +1,6 @@
 import React, { useReducer, useEffect, createContext } from 'react';
 import find from 'lodash-es/find';
 import noop from 'lodash-es/noop';
-import groupBy from 'lodash-es/groupBy';
 import eventHandlers from './eventHandlers';
 import { encounterHelpers, rollD } from 'helpers';
 import { useWindow, useChannel } from 'hooks';
@@ -426,9 +425,6 @@ const EncounterProvider = ({
           ...encounter,
           history: {
             ...history,
-            rounds: groupBy(history.list, (historyLog) => {
-              return historyLog.metaData.round;
-            }),
             currentHistoryIndex: eventState.currentEventIndex,
           },
           combatants,
