@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import noop from 'lodash-es/noop';
 import Icon from 'atoms/Icon';
 import BtnWrap from 'atoms/BtnWrap';
-import { faCheck } from '@fortawesome/pro-regular-svg-icons';
+import { faArrowRight, faCheck } from '@fortawesome/pro-regular-svg-icons';
 import { faDiceD20 } from '@fortawesome/pro-light-svg-icons';
 
 /////////////////////////////
@@ -28,7 +28,7 @@ const CombatantInitiative = ({
   const { setEditingInitiative = noop } = localActions;
   const [hover, setHover] = useState(false);
 
-  const { isUnset, isDead, isComplete } = combatantInsights;
+  const { isUnset, isDead, isComplete, isActive } = combatantInsights;
 
   const RollIcon = () => {
     return (
@@ -50,9 +50,9 @@ const CombatantInitiative = ({
         } else {
           if (!isDead) {
             dispatchEvent({
-              type: isComplete
-                ? combatant_turn_start.type
-                : combatant_turn_end.type,
+              type: isActive
+                ? combatant_turn_end.type
+                : combatant_turn_start.type,
               payload: { combatant_id },
             });
           }
@@ -74,8 +74,10 @@ const CombatantInitiative = ({
             <>
               {!!(isUnset || !encounterStarted) ? (
                 <RollIcon />
-              ) : (
+              ) : isActive ? (
                 <Icon icon={faCheck} />
+              ) : (
+                <Icon icon={faArrowRight} />
               )}
             </>
           ) : (

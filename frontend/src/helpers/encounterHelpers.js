@@ -39,6 +39,12 @@ const encounterHelpers = {
       combatant.status === combatantStatuses.unset
     );
   },
+  isActiveCombatant: (combatant) => {
+    if (typeof combatant !== 'object') {
+      return;
+    }
+    return !!combatant.active;
+  },
   isCompleteCombatant: (combatant) => {
     if (typeof combatant !== 'object') {
       return;
@@ -80,6 +86,7 @@ const encounterHelpers = {
     const { character_type, total_health } = character;
 
     return {
+      isActive: encounterHelpers.isActiveCombatant(combatant),
       isComplete: encounterHelpers.isCompleteCombatant(combatant),
       isTurnReady: encounterHelpers.isTurnReadyCombatant(combatant),
       isDead: encounterHelpers.isDeadCombatant(combatant),

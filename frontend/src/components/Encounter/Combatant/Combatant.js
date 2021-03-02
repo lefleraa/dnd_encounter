@@ -88,7 +88,7 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
   const { actions = {}, insights = {}, helpers = {} } = encounter;
   const { dispatchEvent = noop } = actions;
   const { combatant_roll_initiative } = eventHandlers;
-  const { combatant_id, active } = combatant;
+  const { combatant_id } = combatant;
 
   // CREATE LOCAL STATE TO MANAGE COMBATANT UI CONTROLS
 
@@ -114,6 +114,7 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
     character,
   });
   const {
+    isActive,
     isEnemy,
     isUnset,
     isDead,
@@ -144,7 +145,7 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
         className={classNames(
           'Combatant d-flex align-items-center',
           !isTurnReady && 'Combatant__inactive',
-          active && 'Combatant__active'
+          isActive && 'Combatant__active'
         )}
       >
         <div className="col-auto d-flex align-items-center pl-0 pr-3">
