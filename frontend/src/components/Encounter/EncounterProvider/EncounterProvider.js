@@ -69,23 +69,15 @@ const EncounterProvider = ({
     encounterReducer,
     initEncounter
   );
-  const { round, history = {} } = encounter;
+  const { history = {} } = encounter;
 
   const { combatants = {}, insights = {} } = useEncounterInsights({
     encounter,
     eventState,
   });
-  const {
-    onMostRecentEvent,
-    activeCombatant,
-    activeCombatantCandidate,
-  } = insights;
+  const { onMostRecentEvent } = insights;
 
-  const {
-    combatant_turn_start,
-    combatant_dead,
-    combatant_roll_dice,
-  } = eventHandlers;
+  const { combatant_dead, combatant_roll_dice } = eventHandlers;
 
   /////////////////////////////////////////////////////////
   // GET ENCOUNTER
@@ -257,35 +249,6 @@ const EncounterProvider = ({
   };
 
   /////////////////////////////////////////////////////////
-  // PROPERLY SET ACTIVE CANDIDATE
-  /////////////////////////////////////////////////////////
-
-  // function setActiveCombatant() {
-  //   const { combatant_id } = activeCombatantCandidate || {};
-  //   const { combatant_id: active_combatant_id } = activeCombatant || {};
-
-  //   if (!round || !onMostRecentEvent) {
-  //     return;
-  //   }
-
-  //   const noActiveCandidate = !!(!active_combatant_id && combatant_id);
-  //   const newCandidateCombatant = !!(
-  //     combatant_id && combatant_id !== active_combatant_id
-  //   );
-
-  //   if (noActiveCandidate || newCandidateCombatant) {
-  //     dispatchEvent({
-  //       type: combatant_turn_start.type,
-  //       payload: { combatant_id },
-  //     });
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   setActiveCombatant();
-  // }, [round, onMostRecentEvent, activeCombatant, activeCombatantCandidate]);
-
-  /////////////////////////////////////////////////////////
   // HYDRATE STATE VIA EVENTS:
   // Re-runs every time an event is pushed.
   /////////////////////////////////////////////////////////
@@ -330,6 +293,35 @@ const EncounterProvider = ({
       runEncounterEvent(event, i);
     });
   }, [events]);
+
+  /////////////////////////////////////////////////////////
+  // SET ACTIVE CANDIDATE
+  /////////////////////////////////////////////////////////
+
+  // function setActiveCombatant() {
+  //   const { combatant_id } = activeCombatantCandidate || {};
+  //   const { combatant_id: active_combatant_id } = activeCombatant || {};
+
+  //   if (!round || !onMostRecentEvent) {
+  //     return;
+  //   }
+
+  //   const noActiveCandidate = !!(!active_combatant_id && combatant_id);
+  //   const newCandidateCombatant = !!(
+  //     combatant_id && combatant_id !== active_combatant_id
+  //   );
+
+  //   if (noActiveCandidate || newCandidateCombatant) {
+  //     dispatchEvent({
+  //       type: combatant_turn_start.type,
+  //       payload: { combatant_id },
+  //     });
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   setActiveCombatant();
+  // }, [round, onMostRecentEvent, activeCombatant, activeCombatantCandidate]);
 
   /////////////////////////////////////////////////////////
   // ACTIONS

@@ -15,7 +15,7 @@ const CombatantOptions = ({
   localActions = {},
   combatantInsights = {},
 }) => {
-  const { combatant_id, active, initiative } = combatant;
+  const { combatant_id } = combatant;
   const { setEditingInitiative = noop } = localActions;
   const {
     combatant_fled,
@@ -25,7 +25,7 @@ const CombatantOptions = ({
     combatant_roll_initiative,
   } = eventHandlers;
 
-  const { isDead, isComplete } = combatantInsights;
+  const { isUnset, isActive, isDead, isComplete } = combatantInsights;
 
   return (
     <Dropdown
@@ -35,8 +35,7 @@ const CombatantOptions = ({
       }}
       menuItems={[
         {
-          hidden: !!(isComplete || !initiative),
-          disabled: !!(active || isDead),
+          hidden: isUnset || isActive || isDead,
           text: `Start Turn`,
           before: (
             <Icon
@@ -54,8 +53,8 @@ const CombatantOptions = ({
             }),
         },
         {
-          disabled: !!(isDead || isComplete),
-          text: !!initiative ? `Re-Roll Initiative` : `Roll Initiative`,
+          hidden: isDead || isComplete,
+          text: isUnset ? `Roll Initiative` : `Re-Roll Initiative`,
           before: (
             <Icon
               icon={combatant_roll_initiative.historyLog.icon}
@@ -66,8 +65,7 @@ const CombatantOptions = ({
           action: () => setEditingInitiative(true),
         },
         {
-          hidden: !initiative,
-          disabled: !!(isDead || isComplete),
+          hidden: isUnset || isDead || isComplete,
           text: `Flee`,
           before: (
             <Icon
@@ -85,7 +83,7 @@ const CombatantOptions = ({
             }),
         },
         {
-          disabled: !!isDead,
+          hidden: isDead,
           text: `Dead`,
           before: (
             <Icon

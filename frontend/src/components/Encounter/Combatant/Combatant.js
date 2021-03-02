@@ -202,9 +202,11 @@ const Combatant = ({ combatant = {}, dragHandleProps }) => {
             <>Loading character...</>
           )}
         </div>
-        <div className="col-auto p-0 pl-2">
-          <DiceOptions {...passedProps} />
-        </div>
+        {!isDead && (
+          <div className="col-auto p-0 pl-2">
+            <DiceOptions {...passedProps} />
+          </div>
+        )}
         <div className="col-auto p-0 pl-2">
           <CombatantOptions {...passedProps} />
         </div>
